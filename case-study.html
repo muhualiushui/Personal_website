@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=projects/imdb-sentiment-analysis/index.html" />
+    <title>Redirecting to Projects</title>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const project = params.get("project");
+      const target =
+        project === "atlas"
+          ? "projects/atlas-agent-simulation/index.html"
+          : "projects/imdb-sentiment-analysis/index.html";
+      window.location.replace(target);
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to the project page. If nothing happens, <a href="projects/imdb-sentiment-analysis/index.html">open the IMDb case study</a>.</p>
+  </body>
+</html>

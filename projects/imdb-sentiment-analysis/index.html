@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en" data-site-root="../../">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IMDb Sentiment Analysis: RNN vs Pretrained Transformers | Shuzhen Zhang</title>
+    <meta
+      name="description"
+      content="BiLSTM vs DistilGPT-2 vs XLNet sentiment study with classifier-head and max-length comparisons on IMDb reviews."
+    />
+    <meta name="keywords" content="IMDb sentiment analysis, XLNet, DistilGPT-2, BiLSTM, NLP, HuggingFace, PyTorch" />
+    <meta property="og:title" content="IMDb Sentiment Analysis: RNN vs Pretrained Transformers | Shuzhen Zhang" />
+    <meta
+      property="og:description"
+      content="Case study comparing BiLSTM, DistilGPT-2, and XLNet for IMDb sentiment classification with ablations on sequence length and classifier heads."
+    />
+    <meta property="og:image" content="../../assets/shared/images/profile-icon.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#f6f8fb" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../../atlas-case.css" />
+    <link rel="stylesheet" href="../../imdb-case.css" />
+    <link rel="stylesheet" href="../../fno-diffusion.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="../../index.html"><img class="brand-avatar" src="../../assets/shared/images/profile-icon.jpg" alt="Shuzhen Zhang icon" width="30" height="30" decoding="async" />Shuzhen Zhang</a>
+        <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav id="site-nav" class="nav-menu" data-nav-menu>
+          <div class="nav-links">
+            <a class="nav-link" href="../../index.html">Home</a>
+            <a class="nav-link active" href="../index.html">Projects</a>
+            <a class="nav-link" href="../../cv.html">CV</a>
+            <a class="nav-link" href="../../research.html">Research</a>
+            <a class="nav-link" href="../../about.html">About</a>
+            <a class="nav-link" href="../../contact.html">Contact</a>
+          </div>
+          <div class="nav-actions">
+            <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
+            <a class="btn btn-primary" href="../../assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
+            <div class="icon-links">
+              <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
+              <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
+              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main" data-case-study data-case-key="nlp">
+      <div class="container fno-container atlas-case-page fade-in" data-atlas-page hidden>
+        <div class="atlas-shell fno-case" data-fno-rail-root>
+          <button class="fno-contents-toggle btn btn-secondary" type="button" data-fno-drawer-open aria-controls="atlas-sidebar" aria-expanded="false">
+            Contents
+          </button>
+          <button class="fno-drawer-backdrop" type="button" data-fno-drawer-close aria-label="Close contents"></button>
+
+          <aside id="atlas-sidebar" class="atlas-toc fno-anchor card" data-atlas-toc aria-label="Section navigation">
+            <div class="fno-anchor-head">
+              <p class="fno-anchor-title">Contents</p>
+              <button class="fno-anchor-close" type="button" data-fno-drawer-close aria-label="Close contents">Close</button>
+            </div>
+            <nav class="atlas-toc-links fno-anchor-links" data-toc-links>
+              <div class="fno-progress-track" aria-hidden="true"><span class="fno-progress-indicator" data-fno-progress></span></div>
+
+              <p class="fno-group-label">Core</p>
+              <a href="#hero" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Hero</span></a>
+              <a href="#idea-inspiration" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Idea Inspiration</span></a>
+              <a href="#showcase-video" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Showcase Video</span></a>
+
+              <p class="fno-group-label">Results</p>
+              <a href="#comparison-gallery" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Baseline Evidence</span></a>
+              <a href="#failures" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Failure Cases</span></a>
+              <a href="#eval-character" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Adversarial Stress Test</span></a>
+
+              <p class="fno-group-label">Wrap-up</p>
+              <a href="#fixes" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Fixes</span></a>
+              <a href="#summary" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Summary</span></a>
+              <a href="#links-contact" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Links</span></a>
+            </nav>
+          </aside>
+
+          <article class="atlas-content fno-content">
+            <section id="hero" class="atlas-section atlas-hero card" data-toc-section>
+              <p class="atlas-kicker">ATLAS undergraduate project</p>
+              <h1>Agent Simulation: From Mistral 7B Drift to Mixtral 8x7B Stability</h1>
+              <p class="atlas-hero-summary">
+                Inspired by the Stanford Smallville paper, I tested whether a weaker open model could run an AI-town style agent loop.
+                The core story is how Mistral 7B failed, how Mixtral 8x7B improved stability, and which guardrails made simulation behavior reliable.
+              </p>
+              <div class="atlas-facts">
+                <span class="chip"><strong>Role:</strong> Simulation / LLM Research</span>
+                <span class="chip"><strong>Tools:</strong> Python, Prompt Templates, Validators, Runtime Logs</span>
+                <span class="chip"><strong>Models:</strong> Mistral 7B, Mixtral 8x7B, GPT (reference run)</span>
+                <span class="chip"><strong>Timeframe:</strong> 2024</span>
+              </div>
+              <div class="project-actions atlas-cta-row">
+                <a class="btn btn-primary" href="#showcase-video">Watch Demo</a>
+                <a class="btn btn-secondary" href="#comparison-gallery">View Evidence</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
+                <a class="btn btn-secondary" href="#summary">Read Summary</a>
+              </div>
+            </section>
+
+            <section id="idea-inspiration" class="atlas-section card" data-toc-section>
+              <h2>1) Idea Inspiration</h2>
+              <p>
+                I have read a paper from Stanford which I attached link below. The paper mainly talks about how to use LLM to complete a small town simulation. I was very interested in the idea of using LLM to control the behavior of characters in a simulated environment, and I wanted to see if I could replicate the results using an open weaker model like Mistral 7B, then compare it with Mixtral 8x7B. Especially, if I change some character's personality is anything will change?
+              </p>
+              <p class="atlas-link-row">
+                <a class="atlas-source-link" href="https://hai.stanford.edu/news/computational-agents-exhibit-believable-humanlike-behavior" target="_blank" rel="noopener noreferrer">
+                  <span class="atlas-source-label">Research Source</span>
+                  <span class="atlas-source-title">Stanford HAI: Computational agents exhibit believable humanlike behavior</span>
+                  <span class="atlas-source-action">Open Link ↗</span>
+                </a>
+              </p>
+              <p>
+                The core idea of the simulation is let the LLM follow a loop of "Perceive, Memory Stream, Retrieve, Retrieved Memories, and Act" to control the behavior of characters in a simulated environment. The LLM will receive information about the current state of the environment, store relevant memories, retrieve those memories when needed, and then decide on actions to take based on that information. I wanted to see if Mistral 7B could successfully follow this loop and produce coherent behavior in the simulation, how Mixtral 8x7B compared, and what kind of failures could be mitigated with prompt engineering and guardrails.
+              </p>
+              <figure class="atlas-origin-figure">
+                <img src="../../assets/projects/atlas-agent-simulation/inspiration-agent-loop.png" alt="Perceive, Memory Stream, Retrieve, Retrieved Memories, and Act loop with Plan and Reflect feedback." loading="lazy" />
+              </figure>
+
+            </section>
+
+            <section id="showcase-video" class="atlas-section card" data-toc-section>
+              <h2>2) Showcase Videos</h2>
+              <p class="section-subtitle">Same simulation objective across three runs: reference GPT, Mistral 7B baseline, and Mixtral 8x7B with prompt engineering.</p>
+
+              <div class="atlas-video-switcher" data-video-switcher>
+                <div class="atlas-video-selector" role="tablist" aria-label="Showcase video selector">
+                  <button
+                    type="button"
+                    class="atlas-video-tab"
+                    role="tab"
+                    aria-selected="false"
+                    data-video-tab="gpt"
+                  >
+                    <span class="atlas-tab-title">GPT (Reference)</span>
+                    <span class="atlas-tab-sub">Target behavior baseline</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="atlas-video-tab active"
+                    role="tab"
+                    aria-selected="true"
+                    data-video-tab="mistral-small"
+                  >
+                    <span class="atlas-tab-title">Mistral 7B (Failure)</span>
+                    <span class="atlas-tab-sub">Random-walk and drift</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="atlas-video-tab"
+                    role="tab"
+                    aria-selected="false"
+                    data-video-tab="mistral-large"
+                  >
+                    <span class="atlas-tab-title">Mixtral 8x7B (Improved)</span>
+                    <span class="atlas-tab-sub">Prompt-engineered stabilization</span>
+                  </button>
+                </div>
+
+                <div class="atlas-video-stage">
+                  <div class="atlas-video-wrap">
+                    <video
+                      id="atlas-showcase-player"
+                      class="atlas-video"
+                      controls
+                      preload="metadata"
+                      poster="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png"
+                      data-video-player
+                    >
+                      <source src="../../assets/projects/atlas-agent-simulation/mistral-small-random-walk.mov" type="video/quicktime" />
+                      <track
+                        id="atlas-showcase-track"
+                        kind="captions"
+                        src="../../assets/projects/atlas-agent-simulation/mistral-small-random-walk.vtt"
+                        srclang="en"
+                        label="English"
+                        default
+                        data-video-track
+                      />
+                      Your browser does not support embedded video.
+                    </video>
+                    <button class="atlas-video-overlay" data-video-overlay data-video-target="atlas-showcase-player" type="button" aria-label="Play showcase video">
+                      <span>Play Demo</span>
+                    </button>
+                  </div>
+
+                  <div class="atlas-video-meta">
+                    <p class="atlas-video-label" data-video-label>Run B · Mistral 7B baseline</p>
+                    <h3 data-video-title>Run B: Mistral 7B (random-walk failure)</h3>
+                    <p class="kv" data-video-summary>Weak instruction grounding and unstable action planning create visible random movement and schedule drift.</p>
+                    <ul data-video-points>
+                      <li>Frequent off-path movement despite clear daily requirements.</li>
+                      <li>More instruction drift under longer prompt context.</li>
+                      <li>Low schema reliability without strict post-validation.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="atlas-video-notes">
+                <h3>Optional chapter markers</h3>
+                <ol>
+                  <li><strong>Run A</strong> GPT reference behavior</li>
+                  <li><strong>Run B</strong> Mistral 7B random-walk failure</li>
+                  <li><strong>Run C</strong> Mixtral 8x7B improved after prompt engineering</li>
+                </ol>
+              </div>
+
+              <p class="atlas-summary-line"><strong>What this demo proves:</strong> model scale plus prompt design significantly changes simulation quality, but guardrails are still required for robust outputs.</p>
+              <p class="atlas-note atlas-note-warning"><strong>Known limitations:</strong> this section shows qualitative runs, not benchmark metrics; `.mov` playback support varies by browser codec.</p>
+            </section>
+
+            <section id="comparison-gallery" class="atlas-section card" data-toc-section>
+              <div class="atlas-section-head">
+                <h2>3) Simulation Needs Baseline Ability</h2>
+                <p>Mistral 7B cannot complete one full simulation reliably. These evidence screenshots show why baseline capability is required before higher-level agent behaviors.</p>
+              </div>
+
+              <div class="atlas-filter-row" data-gallery-filters>
+                <button type="button" class="chip-btn" data-gallery-filter="hallucination">Hallucination</button>
+                <button type="button" class="chip-btn active" data-gallery-filter="prompt-to-action">Prompt to Action</button>
+              </div>
+
+              <div class="atlas-gallery-stage">
+                <div class="atlas-carousel" data-gallery-carousel>
+                  <article class="atlas-scenario-card" data-gallery-item data-category="hallucination">
+                    <p class="kv"><strong>Hallucination evidence:</strong> follow the allowed option set and keep schedule output coherent.</p>
+                    <div class="atlas-pair-grid">
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" alt="Stronger model output with cleaner action sequence" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" data-lightbox-caption="Hallucination evidence - stronger model output" />
+                        <figcaption>Stronger run: cleaner, shorter action list with fewer derailments.</figcaption>
+                      </figure>
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" alt="Mistral 7B output with instruction confusion" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" data-lightbox-caption="Hallucination evidence - Mistral 7B output" />
+                        <figcaption>Mistral 7B: verbose confusion and higher instruction-drift risk.</figcaption>
+                      </figure>
+                    </div>
+                  </article>
+
+                  <article class="atlas-scenario-card active" data-gallery-item data-category="prompt-to-action">
+                    <p class="kv atlas-flow-lead"><strong>Prompt-to-action flow:</strong> convert plan text into executable movement and completed actions.</p>
+                    <ol class="atlas-flow-list">
+                      <li><strong>Plan actions ahead:</strong> prepare action blocks before runtime.</li>
+                      <li><strong>Trigger by schedule:</strong> when the time is up, prompt the LLM for how to execute the planned step.</li>
+                      <li><strong>Apply answer in code:</strong> runtime moves the character to the correct location.</li>
+                      <li><strong>Commit completion:</strong> action state is updated and the simulation continues.</li>
+                    </ol>
+                    <div class="atlas-pair-grid atlas-flow-grid">
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-long-context-mistral.png" alt="Action-state text showing prompt response and runtime execution" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-long-context-mistral.png" data-lightbox-caption="Text-to-action evidence - prompt response view" />
+                        <figcaption>Prompt response view: schedule + plan are transformed into the next executable instruction.</figcaption>
+                      </figure>
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-long-context-gpt.png" alt="Simulation map showing action execution after planning" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-long-context-gpt.png" data-lightbox-caption="Text-to-action evidence - action execution view" />
+                        <figcaption>Map execution view: code applies the instruction, moves the character, and completes the action in-world.</figcaption>
+                      </figure>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section id="failures" class="atlas-section card" data-toc-section>
+              <h2>4) Failure Cases</h2>
+              <p>Main failures came from Mistral 7B under dense prompts: hallucinated outputs, instruction drift, and communication loops.</p>
+
+              <details class="atlas-failure-item" open>
+                <summary>Constrained room-selection: correct prompt vs hallucination failure</summary>
+                <div class="atlas-failure-body">
+                  <p><strong>Correct case (expected format):</strong></p>
+                  <div class="atlas-code-block compact">
+                    <div class="atlas-code-head">
+                      <strong>Correct prompt + answer</strong>
+                      <button type="button" class="atlas-copy-btn" data-copy-target="failure-correct">Copy</button>
+                    </div>
+                    <pre><code id="failure-correct">Jane Anderson is going to Jane Anderson's house that has the following areas: {kitchen, bedroom, bathroom}
+* Stay in the current area if the activity can be done there.
+* Never go into other people's rooms unless necessary.
+For cooking, Jane Anderson should go to the following area in Jane Anderson's house:
+Answer: {kitchen}</code></pre>
+                  </div>
+
+                  <p><strong>Wrong case (prompt that triggered failure):</strong></p>
+                  <div class="atlas-code-block compact">
+                    <div class="atlas-code-head">
+                      <strong>Failure prompt</strong>
+                      <button type="button" class="atlas-copy-btn" data-copy-target="failure-wrong">Copy</button>
+                    </div>
+                    <pre><code id="failure-wrong">Isabella Rodriguez is going to Isabella Rodriguez's apartment that has the following areas: {main room}
+* Stay in the current area if the activity can be done there.
+* NEVER go into other people's rooms unless necessary.
+Isabella Rodriguez is sleeping. For sleeping, Isabella Rodriguez should go to the following area in Isabella Rodriguez's apartment (MUST pick one of {main room}):
+Answer: {</code></pre>
+                  </div>
+
+                  <p><strong>Full hallucinated output (error case):</strong></p>
+                  <div class="atlas-code-block compact">
+                    <div class="atlas-code-head">
+                      <strong>Observed model output</strong>
+                      <button type="button" class="atlas-copy-btn" data-copy-target="failure-error">Copy</button>
+                    </div>
+                    <pre><code id="failure-error">main\_room }
+Isabella Rodriguez is sleeping and can stay in any of the areas she has access to. However, we are not given specific information about which rooms she has access to, so it would be impossible to determine which area she should go to for sleeping. There seems to be an error in the second part of your response. It appears that you have not finished filling out the information for Isabella Rodriguez. Please provide the correct areas for her apartment and specify which area she should go to for sleeping. Isabella Rodriguez should go to the main room for sleeping.
+main room }
+--- main room }
+\ Isabella Rodriguez is sleeping. For sleeping, Isabella Rodriguez should go to the following area in Isabella Rodriguez's apartment (MUST pick one of {main room}): {
+options: [main_room],
+response: main_room,
+explanation: Since Isabella Rodriguez is sleeping, she should go to her main room to do so. Please continue with the story. Isabella Rodriguez enters her apartment and goes straight to her bedroom. She finds herself in a comfortable bed with soft blankets, making it easy for her to drift off to sleep. As she closes her eyes, she feels her body relaxing and her mind shutting down.
+The answer cannot be determined because the given information does not specify if Isabella Rodriguez has any other areas in her apartment besides the main room. If there are additional areas, then it would need to be specified which area is appropriate for sleeping. main room; bedroom}</code></pre>
+                  </div>
+
+                  <p><strong>Failure label:</strong> Hallucination + format drift + instruction-following breakdown.</p>
+                  <p><strong>Why it happened:</strong> the model continued narrative generation instead of honoring the strict single-choice output contract.</p>
+                  <p><strong>Fix applied:</strong> enforce `Answer: {option}` schema with validator reject + retry and rules-first prompt compression.</p>
+                </div>
+              </details>
+
+              <details class="atlas-failure-item" open>
+                <summary>Long communication drift (multi-turn conversations become repetitive/noisy)</summary>
+                <div class="atlas-failure-body">
+                  <p><strong>Failure label:</strong> Long-context communication error</p>
+                  <p><strong>Interaction evidence:</strong> as dialogue history grows, responses become repetitive praise loops and lose action relevance.</p>
+                  <div class="atlas-drift-highlights">
+                    <article class="atlas-drift-chip">
+                      <h4>Pattern</h4>
+                      <p>Repeated "agree + praise" language dominates later turns.</p>
+                    </article>
+                    <article class="atlas-drift-chip">
+                      <h4>Risk</h4>
+                      <p>Conversation text starts overriding action-selection constraints.</p>
+                    </article>
+                    <article class="atlas-drift-chip">
+                      <h4>Impact</h4>
+                      <p>Characters keep socializing, but task progress stalls.</p>
+                    </article>
+                  </div>
+                  <div class="atlas-pair-grid atlas-drift-gallery">
+                    <figure>
+                      <img src="../../assets/projects/atlas-agent-simulation/scenario-format-drift-gpt.png" alt="Earlier-stage conversation output where action intent is still visible" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-format-drift-gpt.png" data-lightbox-caption="Long communication drift evidence - earlier stage" />
+                      <figcaption>Earlier stage: repetition appears, but action intent is still traceable.</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="../../assets/projects/atlas-agent-simulation/scenario-format-drift-mistral.png" alt="Late-stage long conversation output with repetitive social text and drift" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-format-drift-mistral.png" data-lightbox-caption="Long communication drift evidence - late stage" />
+                      <figcaption>Late stage: social repetition dominates and instruction-following decays.</figcaption>
+                    </figure>
+                  </div>
+                  <p><strong>Why it happened:</strong> memory and conversation context became too long, reducing salience of hard constraints.</p>
+                  <p><strong>Fix applied:</strong> context-window trimming, recency prioritization, and capped conversational carry-over.</p>
+                </div>
+              </details>
+            </section>
+
+            <section id="eval-character" class="atlas-section card" data-toc-section>
+              <div class="atlas-section-head">
+                <h2>5) Adversarial Persona Stress Test</h2>
+                <p>
+                  Good-character baseline personas are compared against adversarial eval personas to test whether malicious intent stays stable under social dialogue pressure.
+                </p>
+              </div>
+
+              <div class="atlas-stress-summary">
+                <article class="atlas-stress-summary-card">
+                  <h3>Purpose</h3>
+                  <p>Stress-test persona behavior when agents are no longer kind-by-default.</p>
+                </article>
+                <article class="atlas-stress-summary-card">
+                  <h3>Setup</h3>
+                  <p>Run identical simulation loops with baseline personas versus adversarial personas.</p>
+                </article>
+                <article class="atlas-stress-summary-card">
+                  <h3>Observation</h3>
+                  <p>Adversarial plans emerge, but social dialogue can unexpectedly suppress malicious execution.</p>
+                </article>
+                <article class="atlas-stress-summary-card">
+                  <h3>Takeaway</h3>
+                  <p>Goal persistence and persona consistency checks are required for robust evaluation.</p>
+                </article>
+              </div>
+
+              <div class="atlas-stress-columns">
+                <article class="atlas-stress-column atlas-stress-column-baseline">
+                  <header class="atlas-stress-column-head">
+                    <h3>Baseline Personas</h3>
+                    <p>Neutral/blue-gray profile with cooperative goals.</p>
+                  </header>
+
+                  <article class="atlas-stress-persona-card">
+                    <div class="atlas-stress-persona-head">
+                      <img
+                        class="atlas-stress-avatar"
+                        src="../../assets/projects/atlas-agent-simulation/eval-character/good-klaus-name.png"
+                        alt="Klaus Mueller avatar"
+                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/good-klaus-name.png"
+                        data-lightbox-caption="Baseline persona avatar - Klaus Mueller"
+                      />
+                      <div>
+                        <h4>Klaus Mueller</h4>
+                        <p class="atlas-stress-role">Role: Sociology Student Researcher</p>
+                      </div>
+                    </div>
+                    <ul class="atlas-stress-persona-list">
+                      <li><span>Innate tendency</span><strong>Kind, inquisitive, passionate</strong></li>
+                      <li><span>Learned tendency / role</span><strong>Perspective-driven academic with social-justice framing</strong></li>
+                      <li><span>Current focus</span><strong>Writing a gentrification paper with stable daily routine</strong></li>
+                    </ul>
+                  </article>
+
+                  <article class="atlas-stress-persona-card">
+                    <div class="atlas-stress-persona-head">
+                      <img
+                        class="atlas-stress-avatar"
+                        src="../../assets/projects/atlas-agent-simulation/eval-character/good-isabella-name.png"
+                        alt="Isabella Rodriguez avatar"
+                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/good-isabella-name.png"
+                        data-lightbox-caption="Baseline persona avatar - Isabella Rodriguez"
+                      />
+                      <div>
+                        <h4>Isabella Rodriguez</h4>
+                        <p class="atlas-stress-role">Role: Cafe Owner, Host</p>
+                      </div>
+                    </div>
+                    <ul class="atlas-stress-persona-list">
+                      <li><span>Innate tendency</span><strong>Friendly, outgoing, hospitable</strong></li>
+                      <li><span>Learned tendency / role</span><strong>Builds inclusive social atmosphere at Hobbs Cafe</strong></li>
+                      <li><span>Current focus</span><strong>Planning and coordinating a community party event</strong></li>
+                    </ul>
+                  </article>
+                </article>
+
+                <article class="atlas-stress-column atlas-stress-column-eval">
+                  <header class="atlas-stress-column-head">
+                    <h3>Eval Personas</h3>
+                    <p>Soft-red profile with adversarial goals (Slides 15-16 evidence).</p>
+                  </header>
+
+                  <article class="atlas-stress-persona-card atlas-stress-persona-card-eval">
+                    <div class="atlas-stress-persona-head">
+                      <img
+                        class="atlas-stress-avatar"
+                        src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
+                        alt="Adam Smith avatar"
+                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
+                        data-lightbox-caption="Eval persona avatar - Adam Smith"
+                      />
+                      <div>
+                        <h4>Adam Smith</h4>
+                        <p class="atlas-stress-role">Role: Opportunistic Thief</p>
+                      </div>
+                    </div>
+                    <ul class="atlas-stress-persona-list">
+                      <li><span>Innate tendency</span><strong>Manipulative, deceitful, opportunistic</strong></li>
+                      <li><span>Learned tendency / role</span><strong>Scans social systems for trust exploitation opportunities</strong></li>
+                      <li><span>Current focus</span><strong>Prepares Hobbs Cafe theft by studying security and blind spots</strong></li>
+                    </ul>
+                  </article>
+
+                  <article class="atlas-stress-persona-card atlas-stress-persona-card-eval">
+                    <div class="atlas-stress-persona-head">
+                      <img
+                        class="atlas-stress-avatar"
+                        src="../../assets/projects/atlas-agent-simulation/eval-character/evil-abigail-name.png"
+                        alt="Abigail Chen avatar"
+                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/evil-abigail-name.png"
+                        data-lightbox-caption="Eval persona avatar - Abigail Chen"
+                      />
+                      <div>
+                        <h4>Abigail Chen</h4>
+                        <p class="atlas-stress-role">Role: Prankster Master / Chaos Agent</p>
+                      </div>
+                    </div>
+                    <ul class="atlas-stress-persona-list">
+                      <li><span>Innate tendency</span><strong>Evil, malicious, ruthless</strong></li>
+                      <li><span>Learned tendency / role</span><strong>Manipulates events to maximize disruption and social tension</strong></li>
+                      <li><span>Current focus</span><strong>Cause event-day chaos and destabilize cooperative interactions</strong></li>
+                    </ul>
+                  </article>
+                </article>
+              </div>
+
+              <section class="atlas-evil-plans" aria-label="Bad character action plans">
+                <h3><strong>Bad Character Action Plans</strong></h3>
+                <div class="atlas-evil-plans-grid">
+                  <article class="atlas-evil-plan-card atlas-evil-plan-adam">
+                    <header>
+                      <h4>Adam Smith: A thief</h4>
+                      <p>His Behavior: A grande planner</p>
+                    </header>
+                    <ul>
+                      <li>researching Hobbs Cafe online</li>
+                      <li>walking around to observe its layout and entrances/exits</li>
+                      <li>taking note of any security cameras or alarms</li>
+                      <li>conducting a thorough review of Hobbs Cafe's surveillance system and potential blind spots</li>
+                    </ul>
+                  </article>
+
+                  <article class="atlas-evil-plan-card atlas-evil-plan-abigail">
+                    <header>
+                      <h4>Abigail Chen: A trouble maker</h4>
+                      <p>Her Behavior: A Prankster Master</p>
+                    </header>
+                    <ul>
+                      <li>searching for romantic love letter templates online</li>
+                      <li>crafting anonymous love letters to create drama</li>
+                      <li>writing anonymous love letters with a cruel twist</li>
+                      <li>spreading rumors and causing drama at a local cafe</li>
+                      <li>laughing at the chaos she caused so far</li>
+                      <li>anonymously posting damaging information about someone online</li>
+                    </ul>
+                  </article>
+                </div>
+              </section>
+
+              <article class="atlas-stress-failure">
+                <header>
+                  <h3>Featured Failure Case: Intent Collapse After Social Dialogue</h3>
+                  <p>A malicious birthday-party plan is initialized, but not executed after polite conversation interrupts the goal trajectory.</p>
+                </header>
+                <ol class="atlas-stress-timeline">
+                  <li>
+                    <span class="atlas-stress-step">1</span>
+                    <div>
+                      <h4>Malicious plan initialized</h4>
+                      <p>Agent prepares to hide a boom at the party as the primary task objective.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <span class="atlas-stress-step">2</span>
+                    <div>
+                      <h4>Social interaction begins</h4>
+                      <p>Another character starts a friendly conversation, shifting local dialogue tone.</p>
+                    </div>
+                  </li>
+                  <li>
+                    <span class="atlas-stress-step">3</span>
+                    <div>
+                      <h4>Intent collapse</h4>
+                      <p>Agent responds politely and fails to execute the malicious action plan.</p>
+                    </div>
+                  </li>
+                </ol>
+                <p class="atlas-stress-interpretation">
+                  <strong>Interpretation:</strong> conversational politeness can override adversarial intent unless goal memory and persona consistency are explicitly enforced.
+                </p>
+              </article>
+
+            </section>
+
+            <section id="fixes" class="atlas-section card" data-toc-section>
+              <h2>6) Fixes &amp; Stabilization</h2>
+              <div class="atlas-fix-grid">
+                <article class="atlas-step-card">
+                  <h3>Strict Output Contract</h3>
+                  <p>Forced single-answer format (`Answer: {room}`) to stop free-form continuation.</p>
+                </article>
+                <article class="atlas-step-card">
+                  <h3>Validator + Retry Policy</h3>
+                  <p>Reject invalid room/output and auto-reprompt with compressed context.</p>
+                </article>
+                <article class="atlas-step-card">
+                  <h3>Prompt Prioritization</h3>
+                  <p>Rules first, allowed options second, scenario narrative last.</p>
+                </article>
+                <article class="atlas-step-card">
+                  <h3>Model Routing</h3>
+                  <p>Primary experiments used Mistral 7B and Mixtral 8x7B; optional fallback routes handled difficult cases.</p>
+                </article>
+                <article class="atlas-step-card">
+                  <h3>Rate Limiting / Throttling</h3>
+                  <p>Prevents retry storms and high-frequency I/O deadlocks in agent loop updates.</p>
+                </article>
+              </div>
+              <p class="atlas-note atlas-note-warning"><strong>Warning:</strong> without throttle windows and retry caps, failure recovery can destabilize the simulator itself.</p>
+            </section>
+
+            <section id="summary" class="atlas-section card atlas-summary-section" data-toc-section>
+              <h2>7) Summary</h2>
+              <p class="atlas-summary-lead">
+                Stability improved substantially from Mistral 7B to Mixtral 8x7B after <strong>rule-first prompting + validator enforcement + retries</strong>, while long-context drift remains the main unresolved limitation.
+              </p>
+
+              <div class="atlas-summary-compare" aria-label="Qualitative model comparison">
+                <div class="atlas-summary-compare-head" aria-hidden="true">
+                  <span>Dimension</span>
+                  <span>Mistral 7B</span>
+                  <span>Mixtral 8x7B (Prompt-Engineered)</span>
+                </div>
+
+                <div class="atlas-summary-compare-row">
+                  <p class="atlas-summary-dimension">Stability</p>
+                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Cannot complete one full simulation reliably under dense constraints.</p>
+                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Maintains coherent action flow with lower derailment after guardrails.</p>
+                </div>
+
+                <div class="atlas-summary-compare-row">
+                  <p class="atlas-summary-dimension">Failure profile</p>
+                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Hallucination, instruction drift, and brittle text-to-action grounding.</p>
+                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Much cleaner behavior, but residual long-context drift can still appear.</p>
+                </div>
+
+                <div class="atlas-summary-compare-row">
+                  <p class="atlas-summary-dimension">What helped</p>
+                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Strict schema validation and retries reduce failure spikes but do not fully stabilize behavior.</p>
+                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Rule-first prompts plus validator-locked outputs produce more consistent in-world execution.</p>
+                </div>
+              </div>
+
+              <hr class="atlas-summary-divider" />
+
+              <div class="atlas-summary-columns">
+                <div>
+                  <h3>Findings</h3>
+                  <ul class="atlas-summary-list">
+                    <li>Mistral 7B runs fast but remains fragile for full-loop agent simulation.</li>
+                    <li>Prompting alone is not enough; validator enforcement and retries are required for stable execution.</li>
+                    <li>Mixtral 8x7B is materially more reliable, but long-context conversation drift still reduces action quality.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3>Next Actions</h3>
+                  <ul class="atlas-summary-list">
+                    <li>Introduce automatic long-context trimming with recency-weighted memory selection.</li>
+                    <li>Add persona and active-goal consistency checks before each action commit.</li>
+                    <li>Expand adversarial benchmark scenarios to score persistence and failure recovery.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <section id="links-contact" class="atlas-section card" data-toc-section>
+              <h2>8) Links / Assets + Contact</h2>
+              <div class="atlas-links-grid">
+                <a class="btn btn-secondary" href="../../assets/projects/atlas-agent-simulation/atlas-showcase-slides.pptx">Slides / PDF Summary</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
+                <a class="btn btn-primary" href="mailto:muhualiushui@outlook.com">Contact Shuzhen</a>
+              </div>
+            </section>
+          </article>
+        </div>
+      </div>
+
+      <div class="container fno-container imdb-case-page fade-in" data-imdb-page>
+        <div class="fno-case" data-fno-rail-root>
+          <button class="fno-contents-toggle btn btn-secondary" type="button" data-fno-drawer-open aria-controls="imdb-sidebar" aria-expanded="false">
+            Contents
+          </button>
+          <button class="fno-drawer-backdrop" type="button" data-fno-drawer-close aria-label="Close contents"></button>
+
+          <nav id="imdb-sidebar" class="fno-anchor card" aria-label="Section navigation">
+            <div class="fno-anchor-head">
+              <p class="fno-anchor-title">Contents</p>
+              <button class="fno-anchor-close" type="button" data-fno-drawer-close aria-label="Close contents">Close</button>
+            </div>
+            <div class="fno-anchor-links">
+              <div class="fno-progress-track" aria-hidden="true"><span class="fno-progress-indicator" data-fno-progress></span></div>
+
+              <p class="fno-group-label">Core</p>
+              <a href="#imdb-hero" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Overview</span></a>
+              <a href="#imdb-approach" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Approach</span></a>
+
+              <p class="fno-group-label">Results</p>
+              <a href="#imdb-results" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Results</span></a>
+
+              <p class="fno-group-label">Wrap-up</p>
+              <a href="#imdb-takeaways" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Takeaways</span></a>
+            </div>
+          </nav>
+
+          <div class="fno-content">
+        <section id="imdb-hero" class="imdb-section imdb-hero fade-in">
+          <div class="imdb-hero-main">
+            <h1 class="imdb-title">IMDb Sentiment Analysis: RNN vs Pretrained Transformers</h1>
+            <p class="imdb-summary">
+              We compared a BiLSTM baseline against DistilGPT-2 and XLNet under matched sentiment settings, including built-in heads versus a custom MLP head and truncation/max sequence length choices. XLNet performed best, and longer context helped until gains became marginal beyond about 1024 tokens.
+            </p>
+            <div class="imdb-chip-row" aria-label="Project tags">
+              <span class="imdb-chip">NLP</span>
+              <span class="imdb-chip">Sentiment Analysis</span>
+              <span class="imdb-chip">Transformers</span>
+              <span class="imdb-chip">RNN</span>
+              <span class="imdb-chip">Truncation Study</span>
+              <span class="imdb-chip">Kaggle</span>
+            </div>
+            <div class="imdb-cta-row">
+              <a class="imdb-btn imdb-btn-primary" href="#imdb-results">View Results (scroll)</a>
+              <a class="imdb-btn" href="../../assets/projects/imdb-sentiment-analysis/imdb-sentiment-report.pdf" download>Download PDF</a>
+              <a class="imdb-btn" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
+            </div>
+          </div>
+          <aside class="imdb-highlight" aria-label="Project highlights">
+            <p class="imdb-highlight-title">Highlight</p>
+            <dl>
+              <div>
+                <dt>Winner</dt>
+                <dd>XLNet</dd>
+              </div>
+              <div>
+                <dt>Best TestAccuracy</dt>
+                <dd>0.9578</dd>
+              </div>
+              <div>
+                <dt>Key insight</dt>
+                <dd>Diminishing returns after ~1024 tokens</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section id="imdb-approach" class="imdb-section fade-in">
+          <h2 class="imdb-heading">Approach</h2>
+          <p class="imdb-subhead">Three model tracks under the same sentiment task and evaluation setup.</p>
+          <div class="imdb-approach-grid">
+            <article class="imdb-approach-card">
+              <h3>BiLSTM (from scratch)</h3>
+              <p>Bidirectional LSTM baseline trained on tokenized IMDb reviews for binary sentiment classification.</p>
+              <p class="imdb-muted-inline">What we varied: max_len + head (built-in vs MLP)</p>
+            </article>
+            <article class="imdb-approach-card">
+              <h3>DistilGPT-2 (fine-tune)</h3>
+              <p>Fine-tuned DistilGPT-2 on the same review split to compare pretrained transfer against the RNN baseline.</p>
+              <p class="imdb-muted-inline">What we varied: max_len + head (built-in vs MLP)</p>
+            </article>
+            <article class="imdb-approach-card">
+              <h3>XLNet (fine-tune)</h3>
+              <p>Fine-tuned XLNet with matched preprocessing and evaluation to test stronger long-context handling.</p>
+              <p class="imdb-muted-inline">What we varied: max_len + head (built-in vs MLP)</p>
+            </article>
+          </div>
+
+          <div class="imdb-dataset-strip">
+            <h3>Dataset facts + experiment variable</h3>
+            <div class="imdb-dataset-grid">
+              <article class="imdb-stat">
+                <p class="imdb-stat-label">Training reviews</p>
+                <p class="imdb-stat-value">25,000 labeled IMDb</p>
+              </article>
+              <article class="imdb-stat">
+                <p class="imdb-stat-label">Class balance</p>
+                <p class="imdb-stat-value">12,500 negative / 12,500 positive</p>
+              </article>
+              <article class="imdb-stat">
+                <p class="imdb-stat-label">Length stats</p>
+                <p class="imdb-stat-value">mean 234, median 174, IQR 127-284, max 2470</p>
+              </article>
+              <article class="imdb-stat">
+                <p class="imdb-stat-label">max_len</p>
+                <p class="imdb-stat-value">RNN: 500/1024 • Transformers: 500/1024/1200</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="imdb-results" class="imdb-section fade-in">
+          <h2 class="imdb-heading">Results</h2>
+          <p class="imdb-subhead">TestAccuracy only. Best values are highlighted for quick scanning.</p>
+
+          <div class="imdb-controls" aria-label="Static control preview">
+            <div class="imdb-pill-row">
+              <span>Max Length</span>
+              <button type="button" class="imdb-pill">500</button>
+              <button type="button" class="imdb-pill active">1024</button>
+              <button type="button" class="imdb-pill">1200</button>
+            </div>
+            <div class="imdb-pill-row">
+              <span>Head</span>
+              <button type="button" class="imdb-pill active">Base</button>
+              <button type="button" class="imdb-pill">MLP</button>
+            </div>
+          </div>
+
+          <div class="imdb-chart" role="img" aria-label="Best TestAccuracy by model family: BiLSTM 0.8905, DistilGPT-2 0.9299, XLNet 0.9578.">
+            <div class="imdb-chart-row">
+              <p>BiLSTM</p>
+              <div class="imdb-track"><span style="width: 89.05%;"></span></div>
+              <span class="imdb-value">0.8905</span>
+            </div>
+            <div class="imdb-chart-row">
+              <p>DistilGPT-2</p>
+              <div class="imdb-track"><span style="width: 92.99%;"></span></div>
+              <span class="imdb-value">0.9299</span>
+            </div>
+            <div class="imdb-chart-row">
+              <p>XLNet</p>
+              <div class="imdb-track"><span style="width: 95.78%;"></span></div>
+              <span class="imdb-value"><strong>0.9578</strong></span>
+            </div>
+          </div>
+
+          <div class="imdb-mini-table-wrap">
+            <table class="imdb-mini-table" aria-label="TestAccuracy table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>500</th>
+                  <th>1024</th>
+                  <th>1200</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>BiLSTM</td>
+                  <td>0.8727</td>
+                  <td>0.8905</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>DistilGPT-2</td>
+                  <td>0.9225</td>
+                  <td>0.9282</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>DistilGPT-2 + MLP</td>
+                  <td>0.9243</td>
+                  <td>0.9299</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>XLNet</td>
+                  <td>0.9524</td>
+                  <td><strong>0.9578</strong></td>
+                  <td>0.9571</td>
+                </tr>
+                <tr>
+                  <td>XLNet + MLP</td>
+                  <td>0.9525</td>
+                  <td>0.9572</td>
+                  <td>0.9570</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="imdb-best-badge">Best overall: XLNet 0.9578 @ max_len=1024</p>
+          <p class="imdb-note">TestAccuracy computed on Kaggle using 50% of the test set.</p>
+        </section>
+
+        <section id="imdb-takeaways" class="imdb-section fade-in">
+          <h2 class="imdb-heading">Takeaways + Links</h2>
+          <ul class="imdb-takeaway-list">
+            <li>Pretrained Transformers outperform BiLSTM on IMDb sentiment.</li>
+            <li>XLNet consistently achieves the top accuracy.</li>
+            <li>Increasing max sequence length helps, with diminishing returns beyond ~1024.</li>
+          </ul>
+          <div class="imdb-footer-links">
+            <a class="imdb-btn imdb-btn-primary" href="../../assets/projects/imdb-sentiment-analysis/imdb-sentiment-report.pdf" download>Download Report (PDF)</a>
+            <a class="imdb-btn" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub / Notebook</a>
+            <a class="imdb-btn" href="../index.html">Back to Projects</a>
+          </div>
+        </section>
+          </div>
+        </div>
+      </div>
+
+      <div class="container fno-container case-layout fade-in" data-generic-case hidden>
+        <div class="fno-case" data-fno-rail-root>
+          <button class="fno-contents-toggle btn btn-secondary" type="button" data-fno-drawer-open aria-controls="generic-sidebar" aria-expanded="false">
+            Contents
+          </button>
+          <button class="fno-drawer-backdrop" type="button" data-fno-drawer-close aria-label="Close contents"></button>
+
+          <nav id="generic-sidebar" class="fno-anchor card" aria-label="Section navigation">
+            <div class="fno-anchor-head">
+              <p class="fno-anchor-title">Contents</p>
+              <button class="fno-anchor-close" type="button" data-fno-drawer-close aria-label="Close contents">Close</button>
+            </div>
+            <div class="fno-anchor-links">
+              <div class="fno-progress-track" aria-hidden="true"><span class="fno-progress-indicator" data-fno-progress></span></div>
+
+              <p class="fno-group-label">Core</p>
+              <a href="#generic-problem" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Problem</span></a>
+              <a href="#generic-data" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Data</span></a>
+              <a href="#generic-approach" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Approach</span></a>
+              <a href="#generic-experiments" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Experiments</span></a>
+
+              <p class="fno-group-label">Results</p>
+              <a href="#generic-results" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Results</span></a>
+
+              <p class="fno-group-label">Wrap-up</p>
+              <a href="#generic-learned" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Learned</span></a>
+              <a href="#generic-next" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Next</span></a>
+            </div>
+          </nav>
+
+          <article class="grid fno-content gap-4">
+          <header class="card">
+            <h1 class="section-title" data-case-title>NLP Sentiment Classification (IMDB-Style)</h1>
+            <p class="section-subtitle" data-case-summary>
+              Fine-tuned GPT-2 and XLNet for binary sentiment classification, comparing built-in classification heads against a custom pooled last-layer + MLP head under a common evaluation protocol.
+            </p>
+            <div class="chips mt-3" data-case-tags></div>
+            <div class="project-actions mt-3">
+              <a class="btn btn-secondary" href="https://github.com/muhualiushui">GitHub</a>
+              <a class="btn btn-secondary" href="#generic-results">Results</a>
+              <a class="btn btn-secondary" href="../../contact.html">Contact</a>
+            </div>
+          </header>
+
+          <section id="generic-problem" class="card case-section">
+            <h2>1) Problem &amp; Motivation</h2>
+            <p data-problem></p>
+          </section>
+
+          <section id="generic-data" class="card case-section">
+            <h2>2) Data (source, size, preprocessing)</h2>
+            <p data-data></p>
+          </section>
+
+          <section id="generic-approach" class="card case-section">
+            <h2>3) Approach (model/algorithm choices)</h2>
+            <p data-approach></p>
+          </section>
+
+          <section id="generic-experiments" class="card case-section">
+            <h2>4) Experiments (training setup, baselines, ablations)</h2>
+            <p data-experiments></p>
+          </section>
+
+          <section id="generic-results" class="card case-section">
+            <h2>5) Results (table + simple chart)</h2>
+            <table class="data-table">
+              <thead>
+                <tr><th>Variant</th><th>Accuracy</th><th>F1</th><th>LogLoss</th></tr>
+              </thead>
+              <tbody data-results-body></tbody>
+            </table>
+            <div class="chart" data-chart></div>
+          </section>
+
+          <section id="generic-learned" class="card case-section">
+            <h2>6) What I learned + limitations</h2>
+            <p data-learned></p>
+          </section>
+
+          <section id="generic-next" class="card case-section">
+            <h2>7) Next steps</h2>
+            <p data-next></p>
+          </section>
+
+          <section class="card">
+            <h3 class="mb-2">Key takeaways</h3>
+            <ul data-takeaways></ul>
+          </section>
+          </article>
+        </div>
+      </div>
+
+      <div class="atlas-lightbox" data-lightbox hidden>
+        <button type="button" class="atlas-lightbox-close" data-lightbox-close aria-label="Close image viewer">×</button>
+        <button type="button" class="atlas-lightbox-nav atlas-lightbox-prev" data-lightbox-prev aria-label="Previous image">‹</button>
+        <figure>
+          <img src="" alt="Expanded comparison screenshot" data-lightbox-image />
+          <figcaption data-lightbox-caption></figcaption>
+        </figure>
+        <button type="button" class="atlas-lightbox-nav atlas-lightbox-next" data-lightbox-next aria-label="Next image">›</button>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
+        <div class="btn-row">
+          <a href="../../index.html">Home</a><a href="../index.html">Projects</a><a href="../../cv.html">CV</a><a href="../../research.html">Research</a><a href="../../about.html">About</a><a href="../../contact.html">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../../script.js"></script>
+  </body>
+</html>

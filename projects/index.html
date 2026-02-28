@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-site-root="../">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | ML / Applied Scientist Portfolio</title>
+    <meta name="description" content="Projects in NLP, embeddings, statistics, visualization, and applied ML." />
+    <meta name="theme-color" content="#f6f8fb" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="../index.html"><img class="brand-avatar" src="../assets/shared/images/profile-icon.jpg" alt="Shuzhen Zhang icon" width="30" height="30" decoding="async" />Shuzhen Zhang</a>
+        <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav id="site-nav" class="nav-menu" data-nav-menu>
+          <div class="nav-links">
+            <a class="nav-link" href="../index.html">Home</a>
+            <a class="nav-link active" href="./index.html">Projects</a>
+            <a class="nav-link" href="../cv.html">CV</a>
+            <a class="nav-link" href="../research.html">Research</a>
+            <a class="nav-link" href="../about.html">About</a>
+            <a class="nav-link" href="../contact.html">Contact</a>
+          </div>
+          <div class="nav-actions">
+            <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
+            <a class="btn btn-primary" href="../assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
+            <div class="icon-links">
+              <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
+              <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
+              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="container">
+        <section class="section fade-in">
+          <h1 class="section-title">Projects</h1>
+          <p class="section-subtitle">Filter by theme and sort for quick review.</p>
+
+          <div class="filter-bar card mt-4">
+            <div class="chips">
+              <button class="chip-btn active" data-filter="all">All</button>
+              <button class="chip-btn" data-filter="nlp">NLP</button>
+              <button class="chip-btn" data-filter="embeddings">Embeddings</button>
+              <button class="chip-btn" data-filter="visualization">Visualization</button>
+              <button class="chip-btn" data-filter="simulation">Simulation</button>
+              <button class="chip-btn" data-filter="statistics">Statistics</button>
+              <button class="chip-btn" data-filter="research">Research</button>
+              <button class="chip-btn" data-filter="industry">Industry</button>
+            </div>
+            <label>
+              <span class="kv">Sort</span>
+              <select class="select" data-sort>
+                <option value="featured">Featured</option>
+                <option value="recent">Most recent</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="projects-grid mt-4">
+            <article class="card project-card" data-project-card data-tags="research visualization" data-date="2026-02-26" data-featured="1">
+              <h2>FNO-Diffusion for Brain MRI Segmentation</h2>
+              <p class="project-line">BraTS 2021 case study comparing FNO, diffusion U-shape, and an FNO-Diffusion hybrid.</p>
+              <div class="chips"><span class="tag">Medical AI</span><span class="tag">Diffusion</span><span class="tag">FNO</span><span class="tag">PyTorch</span></div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="./fno-diffusion-brain-mri/index.html">Open Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/FNO_torch">GitHub</a>
+              </div>
+            </article>
+
+            <article class="card project-card" data-project-card data-tags="nlp statistics research" data-date="2026-01-20" data-featured="1">
+              <h2>IMDb Sentiment Analysis: RNN vs Pretrained Transformers</h2>
+              <p class="project-line">BiLSTM baseline vs DistilGPT-2/XLNet with max-length and head ablations.</p>
+              <div class="chips"><span class="tag">NLP</span><span class="tag">PyTorch</span><span class="tag">HuggingFace</span><span class="tag">Statistics</span></div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="./imdb-sentiment-analysis/index.html">Open Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
+              </div>
+            </article>
+
+            <article class="card project-card" data-project-card data-tags="llm simulation research" data-date="2025-10-02" data-featured="1">
+              <h2>AI Simulation with Mistral + Mixtral (ATLAS Showcase)</h2>
+              <p class="project-line">Prompt-structured NPC action simulation with room-level constraints and Mistral-to-Mixtral comparisons.</p>
+              <div class="chips"><span class="tag">LLM</span><span class="tag">Mistral 7B</span><span class="tag">Mixtral 8x7B</span><span class="tag">Simulation</span></div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="./atlas-agent-simulation/index.html">Open Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
+        <div class="btn-row">
+          <a href="../index.html">Home</a><a href="../cv.html">CV</a><a href="../research.html">Research</a><a href="../about.html">About</a><a href="../contact.html">Contact</a>
+          <a href="https://github.com/muhualiushui">GitHub</a><a href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js"></script>
+  </body>
+</html>

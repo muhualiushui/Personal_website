@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-site-root="../../">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FNO-Diffusion for Brain MRI Segmentation | Shuzhen Zhang</title>
+    <meta
+      name="description"
+      content="CSE 599 case study: FNO, diffusion U-shape, and FNO-Diffusion hybrid models for BraTS 2021 brain tumor MRI segmentation."
+    />
+    <meta name="theme-color" content="#f6f8fb" />
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../../fno-diffusion.css" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="../../index.html"><img class="brand-avatar" src="../../assets/shared/images/profile-icon.jpg" alt="Shuzhen Zhang icon" width="30" height="30" decoding="async" />Shuzhen Zhang</a>
+        <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav id="site-nav" class="nav-menu" data-nav-menu>
+          <div class="nav-links">
+            <a class="nav-link" href="../../index.html">Home</a>
+            <a class="nav-link active" href="../index.html">Projects</a>
+            <a class="nav-link" href="../../cv.html">CV</a>
+            <a class="nav-link" href="../../research.html">Research</a>
+            <a class="nav-link" href="../../about.html">About</a>
+            <a class="nav-link" href="../../contact.html">Contact</a>
+          </div>
+          <div class="nav-actions">
+            <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
+            <a class="btn btn-primary" href="../../assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
+            <div class="icon-links">
+              <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
+              <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
+              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="container fno-container">
+        <div class="fno-case fade-in" data-fno-rail-root>
+          <button class="fno-contents-toggle btn btn-secondary" type="button" data-fno-drawer-open aria-controls="fno-sidebar" aria-expanded="false">
+            Contents
+          </button>
+          <button class="fno-drawer-backdrop" type="button" data-fno-drawer-close aria-label="Close contents"></button>
+
+          <nav id="fno-sidebar" class="fno-anchor card" aria-label="Section navigation">
+            <div class="fno-anchor-head">
+              <p class="fno-anchor-title">Contents</p>
+              <button class="fno-anchor-close" type="button" data-fno-drawer-close aria-label="Close contents">Close</button>
+            </div>
+
+            <div class="fno-anchor-links">
+              <div class="fno-progress-track" aria-hidden="true"><span class="fno-progress-indicator" data-fno-progress></span></div>
+
+              <p class="fno-group-label">Core</p>
+              <a href="#overview" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Overview</span></a>
+              <a href="#problem" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Problem</span></a>
+              <a href="#approach" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Approach</span></a>
+
+              <p class="fno-group-label">Results</p>
+              <a href="#visual-results" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Visual Results</span></a>
+              <a href="#quant-results" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Quant Results</span></a>
+
+              <p class="fno-group-label">Wrap-up</p>
+              <a href="#lessons" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Lessons</span></a>
+              <a href="#future-work" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Future Work</span></a>
+              <a href="#team" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Context</span></a>
+            </div>
+          </nav>
+
+          <div class="fno-content">
+
+          <section id="overview" class="fno-section card">
+            <p class="fno-kicker">CSE 599 · Academic Case Study</p>
+            <h1 class="fno-title">FNO-Diffusion for Brain MRI Segmentation</h1>
+            <p class="fno-lead">
+              Goal: evaluate brain tumor segmentation on BraTS 2021 by replicating two baselines (FNO segmentation and diffusion U-shape) and testing
+              a hybrid that integrates FNO into diffusion and supervised branches. Hypothesis: FNO global modeling plus diffusion refinement could
+              outperform each model alone.
+            </p>
+            <p class="fno-lead">Implementation: PyTorch on 1× NVIDIA Tesla V100, with training time of about 2–8 hours depending on model.</p>
+
+            <div class="fno-chip-row" aria-label="Project tags">
+              <span class="fno-chip">CSE 599</span>
+              <span class="fno-chip">BraTS 2021</span>
+              <span class="fno-chip">MRI Segmentation</span>
+              <span class="fno-chip">Diffusion</span>
+              <span class="fno-chip">FNO</span>
+              <span class="fno-chip">PyTorch</span>
+            </div>
+
+            <div class="fno-cta-row">
+              <a class="btn btn-primary" href="#quant-results">View Results</a>
+              <a class="btn btn-secondary" href="https://github.com/muhualiushui/FNO_torch">GitHub Repo</a>
+              <a class="btn btn-secondary" href="../index.html">Back to Projects</a>
+              <a class="btn btn-secondary" href="../../contact.html">Contact</a>
+            </div>
+
+            <div class="fno-result-badges" aria-label="Result badges">
+              <article class="fno-result-badge best"><strong>69.44%</strong> · Diffusion with U-shape (best)</article>
+              <article class="fno-result-badge"><strong>65.13%</strong> · FNO baseline</article>
+              <article class="fno-result-badge"><strong>57.03%</strong> · FNO-Diffusion hybrid</article>
+            </div>
+          </section>
+
+          <section class="fno-section card" aria-label="Quick facts">
+            <h2>Quick Facts</h2>
+            <p class="section-subtitle">Core dataset and experiment setup.</p>
+
+            <div class="fno-facts-grid">
+              <article class="fno-fact"><p class="fno-fact-label">Dataset</p><p class="fno-fact-value">BraTS 2021 (2D slices from 3D volumes)</p></article>
+              <article class="fno-fact"><p class="fno-fact-label">Task</p><p class="fno-fact-value">Brain tumor segmentation (multi-class)</p></article>
+              <article class="fno-fact"><p class="fno-fact-label">Metric</p><p class="fno-fact-value">DICE coefficient</p></article>
+              <article class="fno-fact"><p class="fno-fact-label">Compute</p><p class="fno-fact-value">1× NVIDIA Tesla V100</p></article>
+              <article class="fno-fact"><p class="fno-fact-label">Data split</p><p class="fno-fact-value">70% train / 20% val / 10% test</p></article>
+              <article class="fno-fact"><p class="fno-fact-label">Training time</p><p class="fno-fact-value">~2–8 hours</p></article>
+            </div>
+
+            <div class="fno-data-grid">
+              <article class="fno-data-card">
+                <h3>Dataset + Preprocessing</h3>
+                <ul>
+                  <li>BraTS 2021 volume size: 240×240×155, reshaped to slice-wise 2D images.</li>
+                  <li>Data augmentation: random horizontal and vertical flips.</li>
+                  <li>Labels converted to one-hot format with background and tumor subregion classes.</li>
+                </ul>
+              </article>
+              <figure class="fno-legend-card">
+                <img src="../../assets/projects/fno-diffusion-brain-mri/figures/fig1_class_labels.png" alt="Class labels legend figure from the PDF report." loading="lazy" />
+                <figcaption>Class labels legend (Figure 1, PDF page 3).</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section id="problem" class="fno-section card">
+            <h2>Problem &amp; Motivation</h2>
+            <p class="section-subtitle">
+              Accurate tumor boundary delineation is clinically important, while manual annotation is slow and error-prone.
+            </p>
+            <ul class="fno-list">
+              <li>Reliable segmentation is important for treatment planning and follow-up.</li>
+              <li>Boundary precision is hard in heterogeneous lesions.</li>
+              <li>This project tests whether global spectral modeling plus diffusion refinement helps.</li>
+            </ul>
+          </section>
+
+          <section id="approach" class="fno-section card">
+            <h2>Approach</h2>
+            <p class="section-subtitle">Three model tracks under the same data split and DICE evaluation.</p>
+
+            <div class="fno-model-grid">
+              <article class="fno-model-card">
+                <h3>A) FNO Segmentation Baseline</h3>
+                <p>Global context via spectral convolution with Fourier layers.</p>
+              </article>
+              <article class="fno-model-card">
+                <h3>B) Diffusion with U-shape Baseline</h3>
+                <p>Dual-path diffusion-guided supervision with U-shape locality and skip connections.</p>
+              </article>
+              <article class="fno-model-card">
+                <h3>C) Proposed FNO-Diffusion Hybrid</h3>
+                <p>Replace UNet modules with FNO blocks in diffusion and supervised branches.</p>
+              </article>
+            </div>
+
+            <div class="fno-arch-grid">
+              <figure class="fno-figure-card">
+                <img src="../../assets/projects/fno-diffusion-brain-mri/figures/fig2_fno_architecture.png" alt="FNO architecture diagram from Figure 2." loading="lazy" />
+                <figcaption>FNO architecture (Figure 2, PDF page 3).</figcaption>
+              </figure>
+              <figure class="fno-figure-card">
+                <img src="../../assets/projects/fno-diffusion-brain-mri/figures/fig3_dual_path_diffusion.png" alt="Dual-path diffusion supervision diagram from Figure 3." loading="lazy" />
+                <figcaption>Dual-path diffusion supervision (Figure 3, PDF page 4).</figcaption>
+              </figure>
+            </div>
+
+            <details class="fno-details">
+              <summary>Training Details (optional)</summary>
+              <div class="fno-details-grid">
+                <p>
+                  <strong>FNO:</strong> modes k1=k2=10, width 16, 3 repeated blocks per branch, batch 8, epochs 50, Adam lr 3e-4, GELU, Dice + CE
+                  (lambda=0.5).
+                </p>
+                <p>
+                  <strong>Diffusion U-shape:</strong> Adam lr 1e-2, batch 32, max 300 epochs, early stop 50, EMA 0.99, Dice + CE, dynamic class
+                  weights, unsupervised weight 10.
+                </p>
+                <p>
+                  <strong>FNO-Diffusion:</strong> SGD momentum 0.9, weight decay 3e-5, lr 0.001, batch 32, EMA 0.99, timesteps 1000 (sampling 10),
+                  FNO modes [16,16], width 32, blocks/channel 3, time embedding 512, dropout 0.5.
+                </p>
+              </div>
+            </details>
+          </section>
+
+          <section id="visual-results" class="fno-section card">
+            <h2>Visual Results</h2>
+            <p class="section-subtitle">Three-column qualitative comparison: Input, Ground Truth, Prediction.</p>
+
+            <article class="fno-qual-row">
+              <h3>FNO Baseline (Figure 4, PDF page 8)</h3>
+              <div class="fno-qual-grid">
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/fno_input.png" alt="FNO input MRI slice." loading="lazy" />
+                  <figcaption>Input MRI</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/fno_ground_truth.png" alt="FNO ground-truth mask." loading="lazy" />
+                  <figcaption>Ground Truth</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/fno_prediction.png" alt="FNO prediction mask." loading="lazy" />
+                  <figcaption>Prediction</figcaption>
+                </figure>
+              </div>
+              <p class="fno-takeaway"><strong>DICE 65.13%</strong> · Captures global context but loses boundary precision.</p>
+            </article>
+
+            <article class="fno-qual-row">
+              <h3>Diffusion with U-shape (Figure 5, PDF page 8)</h3>
+              <div class="fno-qual-grid">
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/diffusion_input.png" alt="Diffusion input MRI slice." loading="lazy" />
+                  <figcaption>Input MRI</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/diffusion_ground_truth.png" alt="Diffusion ground-truth mask." loading="lazy" />
+                  <figcaption>Ground Truth</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/diffusion_prediction.png" alt="Diffusion prediction mask." loading="lazy" />
+                  <figcaption>Prediction</figcaption>
+                </figure>
+              </div>
+              <p class="fno-takeaway"><strong>DICE 69.44%</strong> · Best qualitative and quantitative segmentation quality.</p>
+            </article>
+
+            <article class="fno-qual-row">
+              <h3>FNO-Diffusion Hybrid (Figure 6, PDF page 8)</h3>
+              <div class="fno-qual-grid">
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/hybrid_input.png" alt="FNO-Diffusion input MRI slice." loading="lazy" />
+                  <figcaption>Input MRI</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/hybrid_ground_truth.png" alt="FNO-Diffusion ground-truth mask." loading="lazy" />
+                  <figcaption>Ground Truth</figcaption>
+                </figure>
+                <figure>
+                  <img src="../../assets/projects/fno-diffusion-brain-mri/splits/hybrid_prediction.png" alt="FNO-Diffusion prediction mask." loading="lazy" />
+                  <figcaption>Prediction</figcaption>
+                </figure>
+              </div>
+              <p class="fno-takeaway"><strong>DICE 57.03%</strong> · Hybrid underperformed, especially on fine local boundaries.</p>
+            </article>
+          </section>
+
+          <section id="quant-results" class="fno-section card">
+            <h2>Quantitative Results</h2>
+            <p class="section-subtitle">Ranked DICE comparison on the test set.</p>
+
+            <div class="fno-quant-grid">
+              <article class="fno-table-card">
+                <table class="fno-table">
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Model</th>
+                      <th>DICE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="is-best">
+                      <td>1</td>
+                      <td>Diffusion with U-shape</td>
+                      <td>69.44%</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>FNO baseline</td>
+                      <td>65.13%</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>FNO-Diffusion hybrid</td>
+                      <td>57.03%</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="fno-mobile-table">
+                  <article><p><strong>#1 Diffusion with U-shape</strong></p><p>DICE: 69.44%</p></article>
+                  <article><p><strong>#2 FNO baseline</strong></p><p>DICE: 65.13%</p></article>
+                  <article><p><strong>#3 FNO-Diffusion hybrid</strong></p><p>DICE: 57.03%</p></article>
+                </div>
+              </article>
+
+              <article class="fno-chart-card">
+                <h3>DICE by Model</h3>
+                <div class="fno-bars" role="img" aria-label="DICE by model: Diffusion U-shape 69.44, FNO 65.13, FNO-Diffusion 57.03.">
+                  <div class="fno-bar-row">
+                    <div class="fno-bar-label"><span>Diffusion U-shape</span><strong>69.44%</strong></div>
+                    <div class="fno-bar-track"><div class="fno-bar-fill best" style="--score: 69.44"></div></div>
+                  </div>
+                  <div class="fno-bar-row">
+                    <div class="fno-bar-label"><span>FNO baseline</span><strong>65.13%</strong></div>
+                    <div class="fno-bar-track"><div class="fno-bar-fill mid" style="--score: 65.13"></div></div>
+                  </div>
+                  <div class="fno-bar-row">
+                    <div class="fno-bar-label"><span>FNO-Diffusion</span><strong>57.03%</strong></div>
+                    <div class="fno-bar-track"><div class="fno-bar-fill low" style="--score: 57.03"></div></div>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <aside class="fno-callout">
+              <h3>Key takeaway: why the hybrid underperformed</h3>
+              <p>
+                Combined Diffusion+FNO performed worse than FNO alone or diffusion U-shape. A likely reason is that FNO lacks local attention and
+                feature refinement required for precise boundaries, while U-shape benefits from skip connections and convolutional locality.
+              </p>
+            </aside>
+          </section>
+
+          <section id="lessons" class="fno-section card">
+            <h2>Lessons Learned</h2>
+            <div class="fno-lessons-grid">
+              <article class="fno-lesson-card">
+                <h3>What was easy</h3>
+                <ul>
+                  <li>Diffusion U-shape pipeline was easier than MedSegDiff-V2 due to clearer modular structure.</li>
+                  <li>Forward diffusion, denoising, and loss components were easier to isolate for debugging.</li>
+                  <li>Swapping components (including FNO blocks) was straightforward in the modular baseline.</li>
+                </ul>
+              </article>
+              <article class="fno-lesson-card">
+                <h3>What was difficult</h3>
+                <ul>
+                  <li>Reproducing MedSegDiff-V2 for multiclass failed despite reasonable binary performance.</li>
+                  <li>Training was unstable and hard to tune for multiclass segmentation.</li>
+                  <li>Timestep embeddings with FNO blocks caused shape mismatches and conditioning issues.</li>
+                </ul>
+              </article>
+            </div>
+
+            <figure class="fno-failure-figure">
+              <img src="../../assets/projects/fno-diffusion-brain-mri/figures/fig7_medsegdiff_binary.png" alt="MedSegDiff-V2 binary segmentation result from Figure 7." loading="lazy" />
+              <figcaption>Binary segmentation reasonable; failed to generalize to multiclass segmentation.</figcaption>
+            </figure>
+          </section>
+
+          <section id="future-work" class="fno-section card">
+            <h2>Future Work</h2>
+            <div class="fno-future-grid">
+              <article class="fno-future-card">
+                <h3>1. Prioritize stable baselines</h3>
+                <p>Start from a reliable U-Net diffusion baseline before introducing complex hybrid modules.</p>
+              </article>
+              <article class="fno-future-card">
+                <h3>2. Keep 2D before 3D</h3>
+                <p>Start with 2D slices and only extend to 3D after strong stability is confirmed.</p>
+              </article>
+              <article class="fno-future-card">
+                <h3>3. Run loss ablations</h3>
+                <p>Test dynamic weighting strategies and loss balancing with controlled ablation studies.</p>
+              </article>
+              <article class="fno-future-card">
+                <h3>4. Preserve local pathways</h3>
+                <p>Use spectral blocks for global context while retaining conv/attention paths for boundary detail.</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="team" class="fno-section card">
+            <h2>Project Context</h2>
+            <div class="fno-team-grid">
+              <article class="fno-team-card">
+                <h3>Role</h3>
+                <ul>
+                  <li>Shuzhen Zhang</li>
+                </ul>
+                <p><strong>Scope:</strong> Course project focused on baseline reproduction and hybrid-model evaluation.</p>
+                <p><strong>Course:</strong> CSE 599</p>
+                <p><strong>Year:</strong> 2026</p>
+              </article>
+              <article class="fno-team-card">
+                <h3>Links</h3>
+                <p><a href="../index.html">Back to projects</a></p>
+                <p><a href="https://github.com/muhualiushui/FNO_torch">GitHub repo</a></p>
+                <p><a href="../../contact.html">Contact</a></p>
+              </article>
+            </div>
+          </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
+        <div class="btn-row">
+          <a href="#top">Back to top</a><a href="../index.html">Projects</a><a href="https://github.com/muhualiushui">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../../script.js"></script>
+  </body>
+</html>

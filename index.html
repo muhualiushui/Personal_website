@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | ML / Applied Scientist Portfolio</title>
+    <meta
+      name="description"
+      content="Portfolio of an M.S. Statistics student focused on practical machine learning, embeddings, and statistical modeling."
+    />
+    <meta name="theme-color" content="#f6f8fb" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html"><img class="brand-avatar" src="assets/shared/images/profile-icon.jpg" alt="Shuzhen Zhang icon" width="30" height="30" decoding="async" />Shuzhen Zhang</a>
+        <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav id="site-nav" class="nav-menu" data-nav-menu>
+          <div class="nav-links">
+            <a class="nav-link active" href="index.html">Home</a>
+            <a class="nav-link" href="projects/index.html">Projects</a>
+            <a class="nav-link" href="cv.html">CV</a>
+            <a class="nav-link" href="research.html">Research</a>
+            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="contact.html">Contact</a>
+          </div>
+          <div class="nav-actions">
+            <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
+            <a class="btn btn-primary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
+            <div class="icon-links" aria-label="Social links">
+              <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
+              <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
+              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="container">
+        <section class="hero section fade-in">
+          <div>
+            <span class="badge">Aspiring AI Scientist</span>
+            <h1>Shuzhen Zhang</h1>
+            <p class="hero-titleline">
+              M.S. Statistics student at the University of Washington and B.S. Mathematics student at the University of Illinois Urbana-Champaign
+            </p>
+            <p class="hero-value">
+              Here is my playground for sharing some information for people who want to know more about me academically. 
+              In my childhood, I always imagine how world will be different when AI and robotic become wildly used in human world. 
+              Now, the AI epoch is coming, I am passiobn to see that happen and want to be part of it. 
+              Lets work together to make the history 😆
+            </p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="projects/index.html">View Projects</a>
+              <a class="btn btn-secondary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
+              <a class="btn btn-ghost" href="https://github.com/muhualiushui">GitHub</a>
+              <a class="btn btn-ghost" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
+              <a class="btn btn-ghost" href="mailto:muhualiushui@outlook.com">Email</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="abstract-graphic" role="img" aria-label="Portrait of Shuzhen Zhang in decorative frame">
+              <img
+                class="abstract-image"
+                src="assets/shared/images/profile-icon.jpg"
+                alt="Portrait of Shuzhen Zhang"
+                width="1280"
+                height="1280"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="section strip fade-in">
+          <div class="strip-items">
+            <span class="strip-item">Amazon</span>
+            <span class="strip-item">University of Washington</span>
+            <span class="strip-item">University of Illinois at Urbana-Champaign</span>
+            <span class="strip-item">Research Assistant</span>
+          </div>
+          <div class="chips">
+            <span class="chip">Python • R • PyTorch/HuggingFace </span>
+            <span class="chip">Unsupervised learning &amp; embeddings</span>
+            <span class="chip">Experimentation &amp; evaluation</span>
+          </div>
+        </section>
+
+        <section class="section fade-in" aria-labelledby="featured-projects">
+          <h2 id="featured-projects" class="section-title">Featured Projects</h2>
+          <p class="section-subtitle">Project-first highlights for fast recruiter scanning.</p>
+          <div class="grid mt-6">
+            <article class="card project-card">
+              <h3>FNO-Diffusion for Brain MRI Segmentation</h3>
+              <p class="project-line"><strong>Problem:</strong> Improve segmentation quality for BraTS 2021 MRI volumes under multi-modal uncertainty.</p>
+              <p class="project-line"><strong>Method:</strong> Compared baseline FNO, diffusion U-shape, and an FNO-Diffusion hybrid with aligned evaluation.</p>
+              <p class="project-line"><strong>Result:</strong> Built a case-study workflow showing where hybrid modeling improves robustness across regions.</p>
+              <div class="chips">
+                <span class="tag">Medical AI</span><span class="tag">Diffusion</span><span class="tag">FNO</span>
+                <span class="tag">PyTorch</span>
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="projects/fno-diffusion-brain-mri/index.html">Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/FNO_torch">GitHub</a>
+              </div>
+            </article>
+
+            <article class="card project-card">
+              <h3>IMDb Sentiment Analysis: RNN vs Pretrained Transformers</h3>
+              <p class="project-line"><strong>Problem:</strong> Compare RNN baseline quality against pretrained transformers on IMDb sentiment.</p>
+              <p class="project-line"><strong>Method:</strong> BiLSTM vs DistilGPT-2/XLNet with built-in vs MLP heads and max-length ablations.</p>
+              <p class="project-line"><strong>Result:</strong> XLNet reached 0.9578 TestAccuracy; longer context helped with diminishing returns after ~1024 tokens.</p>
+              <div class="chips">
+                <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">HuggingFace</span>
+                <span class="tag">NLP</span><span class="tag">Statistics</span>
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="projects/imdb-sentiment-analysis/index.html">Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
+                <a class="btn btn-ghost" href="projects/imdb-sentiment-analysis/index.html#imdb-results">Results</a>
+              </div>
+            </article>
+
+            <article class="card project-card">
+              <h3>AI Simulation with Mistral + Mixtral (ATLAS Showcase)</h3>
+              <p class="project-line"><strong>Problem:</strong> Simulate realistic NPC action choices under hard room-access constraints.</p>
+              <p class="project-line"><strong>Method:</strong> Prompt and task-design experiments with Mistral 7B and Mixtral 8x7B, plus GPT/Claude comparison checks.</p>
+              <p class="project-line"><strong>Result:</strong> Produced a prototype workflow that reduced invalid action outputs on constrained assignments.</p>
+              <div class="chips">
+                <span class="tag">LLM</span><span class="tag">Mistral 7B</span><span class="tag">Mixtral 8x7B</span>
+                <span class="tag">Prompt Engineering</span><span class="tag">Simulation</span>
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-primary" href="projects/atlas-agent-simulation/index.html">Case Study</a>
+                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section fade-in" aria-labelledby="experience">
+          <h2 id="experience" class="section-title">Experience Snapshot</h2>
+          <div class="timeline mt-4">
+            <article class="timeline-item card">
+              <h3>UIUC-ATLAS | Machine Learning Analyzer</h3>
+              <p class="timeline-meta">Champaign, IL · May 2023 - May 2024</p>
+              <ul>
+                <li>Replicated a GPT-based AI town simulation using Mistral 7B / Mixtral 8x7B with a GPT-2 tokenizer from a research paper.</li>
+                <li>Rewrote query and algorithm logic from the original repository and analyzed NPC action behavior.</li>
+                <li>Designed prompt-engineering experiments to study conditional probability weaknesses in filtered AI outputs.</li>
+              </ul>
+            </article>
+
+            <article class="timeline-item card">
+              <h3>Manifold Learning Research | Contributor</h3>
+              <p class="timeline-meta">Seattle, WA · Jul. 2024 - Present</p>
+              <ul>
+                <li>Contributed standardized plotting and unsupervised embedding construction workflows for manifold learning studies.</li>
+                <li>Developed distortion visualization on C. elegans data to analyze density effects and neighborhood breaks.</li>
+                <li>Supported publication work on interactive metric-distortion visualization for nonlinear embeddings.</li>
+              </ul>
+            </article>
+
+            <article class="timeline-item card">
+              <h3>Amazon | Jr. Applied Scientist</h3>
+              <p class="timeline-meta">Seattle, WA · Oct. 2024 - Present</p>
+              <ul>
+                <li>Contributed to experimentation and analysis workflows tied to recommendation/embedding initiatives.</li>
+                <li>Built robust data processing steps for evaluation datasets and metric monitoring.</li>
+                <li>Communicated model tradeoffs and impact risks to technical and cross-functional stakeholders.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section fade-in" aria-labelledby="skills">
+          <h2 id="skills" class="section-title">Skills</h2>
+          <div class="skill-grid mt-4">
+            <article class="card skill-group">
+              <h3>ML / Stats</h3>
+              <p class="skill-list">
+                Unsupervised learning, representation learning, GLM/LMM/GEE, statistical inference, experimental design,
+                and evaluation metrics.
+              </p>
+            </article>
+            <article class="card skill-group">
+              <h3>Tools</h3>
+              <p class="skill-list">Python, R, PyTorch, HuggingFace, Shiny, Git, SQL.</p>
+            </article>
+            <article class="card skill-group">
+              <h3>Work Style</h3>
+              <p class="skill-list">Reproducibility, clean code, and clear communication with research and product teams.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section fade-in card" aria-labelledby="contact">
+          <h2 id="contact" class="section-title">Contact</h2>
+          <p class="section-subtitle">
+            Open to applied scientist / ML engineer opportunities and research collaborations.
+          </p>
+          <div class="btn-row mt-4">
+            <a class="btn btn-primary" href="mailto:muhualiushui@outlook.com">muhualiushui@outlook.com</a>
+            <a class="btn btn-secondary" href="https://github.com/muhualiushui">GitHub</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
+        <div class="btn-row">
+          <a href="projects/index.html">Projects</a>
+          <a href="cv.html">CV</a>
+          <a href="research.html">Research</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="https://github.com/muhualiushui">GitHub</a>
+          <a href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
