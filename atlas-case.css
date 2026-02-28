@@ -918,99 +918,6 @@
   font-size: 0.9rem;
 }
 
-.atlas-summary-section {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.atlas-summary-lead {
-  margin: 0;
-  color: var(--muted);
-  max-width: 76ch;
-  line-height: 1.58;
-}
-
-.atlas-summary-lead strong {
-  color: var(--text);
-  font-weight: 700;
-}
-
-.atlas-summary-compare {
-  margin-top: 0.2rem;
-  border-top: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-}
-
-.atlas-summary-compare-head {
-  display: none;
-  font-size: 0.73rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: color-mix(in srgb, var(--text) 58%, var(--muted));
-  padding: 0.55rem 0.15rem 0.5rem;
-}
-
-.atlas-summary-compare-row {
-  display: grid;
-  gap: 0.38rem;
-  padding: 0.72rem 0.15rem;
-  border-top: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
-}
-
-.atlas-summary-compare-row:first-of-type {
-  border-top: 0;
-}
-
-.atlas-summary-compare-row p {
-  margin: 0;
-  color: color-mix(in srgb, var(--text) 88%, var(--muted));
-  line-height: 1.55;
-}
-
-.atlas-summary-dimension {
-  font-weight: 700;
-  color: var(--text);
-}
-
-.atlas-summary-mini-label {
-  display: inline-block;
-  margin-right: 0.4rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--text) 60%, var(--muted));
-  font-weight: 700;
-}
-
-.atlas-summary-divider {
-  margin: 0.1rem 0 0;
-  border: 0;
-  border-top: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
-}
-
-.atlas-summary-columns {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.atlas-summary-columns h3 {
-  margin: 0;
-  font-size: 0.99rem;
-}
-
-.atlas-summary-list {
-  margin: 0.45rem 0 0;
-  padding-left: 1.1rem;
-  display: grid;
-  gap: 0.42rem;
-  color: color-mix(in srgb, var(--text) 90%, var(--muted));
-}
-
-.atlas-summary-list li {
-  margin: 0;
-}
-
 .atlas-before-after {
   margin-top: 1rem;
   padding: 0.85rem;
@@ -1237,31 +1144,6 @@
   .atlas-fix-grid,
   .atlas-roadmap-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .atlas-summary-compare-head,
-  .atlas-summary-compare-row {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.2fr) minmax(0, 1.2fr);
-    column-gap: 1rem;
-  }
-
-  .atlas-summary-compare-head {
-    align-items: end;
-  }
-
-  .atlas-summary-mini-label {
-    display: none;
-  }
-
-  .atlas-summary-columns {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 1.3rem;
-  }
-
-  .atlas-summary-columns > div + div {
-    border-left: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
-    padding-left: 1.3rem;
   }
 
 }

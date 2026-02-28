@@ -82,7 +82,6 @@
 
               <p class="fno-group-label">Wrap-up</p>
               <a href="#fixes" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Fixes</span></a>
-              <a href="#summary" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Summary</span></a>
               <a href="#links-contact" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Links</span></a>
             </nav>
           </aside>
@@ -105,7 +104,6 @@
                 <a class="btn btn-primary" href="#showcase-video">Watch Demo</a>
                 <a class="btn btn-secondary" href="#comparison-gallery">View Evidence</a>
                 <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
-                <a class="btn btn-secondary" href="#summary">Read Summary</a>
               </div>
             </section>
 
@@ -584,64 +582,9 @@ The answer cannot be determined because the given information does not specify i
               <p class="atlas-note atlas-note-warning"><strong>Warning:</strong> without throttle windows and retry caps, failure recovery can destabilize the simulator itself.</p>
             </section>
 
-            <section id="summary" class="atlas-section card atlas-summary-section" data-toc-section>
-              <h2>7) Summary</h2>
-              <p class="atlas-summary-lead">
-                Stability improved substantially from Mistral 7B to Mixtral 8x7B after <strong>rule-first prompting + validator enforcement + retries</strong>, while long-context drift remains the main unresolved limitation.
-              </p>
-
-              <div class="atlas-summary-compare" aria-label="Qualitative model comparison">
-                <div class="atlas-summary-compare-head" aria-hidden="true">
-                  <span>Dimension</span>
-                  <span>Mistral 7B</span>
-                  <span>Mixtral 8x7B (Prompt-Engineered)</span>
-                </div>
-
-                <div class="atlas-summary-compare-row">
-                  <p class="atlas-summary-dimension">Stability</p>
-                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Cannot complete one full simulation reliably under dense constraints.</p>
-                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Maintains coherent action flow with lower derailment after guardrails.</p>
-                </div>
-
-                <div class="atlas-summary-compare-row">
-                  <p class="atlas-summary-dimension">Failure profile</p>
-                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Hallucination, instruction drift, and brittle text-to-action grounding.</p>
-                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Much cleaner behavior, but residual long-context drift can still appear.</p>
-                </div>
-
-                <div class="atlas-summary-compare-row">
-                  <p class="atlas-summary-dimension">What helped</p>
-                  <p><span class="atlas-summary-mini-label">Mistral 7B</span>Strict schema validation and retries reduce failure spikes but do not fully stabilize behavior.</p>
-                  <p><span class="atlas-summary-mini-label">Mixtral 8x7B</span>Rule-first prompts plus validator-locked outputs produce more consistent in-world execution.</p>
-                </div>
-              </div>
-
-              <hr class="atlas-summary-divider" />
-
-              <div class="atlas-summary-columns">
-                <div>
-                  <h3>Findings</h3>
-                  <ul class="atlas-summary-list">
-                    <li>Mistral 7B runs fast but remains fragile for full-loop agent simulation.</li>
-                    <li>Prompting alone is not enough; validator enforcement and retries are required for stable execution.</li>
-                    <li>Mixtral 8x7B is materially more reliable, but long-context conversation drift still reduces action quality.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3>Next Actions</h3>
-                  <ul class="atlas-summary-list">
-                    <li>Introduce automatic long-context trimming with recency-weighted memory selection.</li>
-                    <li>Add persona and active-goal consistency checks before each action commit.</li>
-                    <li>Expand adversarial benchmark scenarios to score persistence and failure recovery.</li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-
             <section id="links-contact" class="atlas-section card" data-toc-section>
-              <h2>8) Links / Assets + Contact</h2>
+              <h2>7) Links + Contact</h2>
               <div class="atlas-links-grid">
-                <a class="btn btn-secondary" href="../../assets/projects/atlas-agent-simulation/atlas-showcase-slides.pptx">Slides / PDF Summary</a>
                 <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
                 <a class="btn btn-primary" href="mailto:muhualiushui@outlook.com">Contact Shuzhen</a>
               </div>
