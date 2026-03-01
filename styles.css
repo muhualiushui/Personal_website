@@ -188,6 +188,8 @@ select:focus-visible {
   top: 72px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  max-height: calc(100dvh - 72px);
+  overflow-y: auto;
 }
 
 .nav-menu.open {
@@ -668,6 +670,10 @@ select:focus-visible {
   background: var(--surface-alt);
 }
 
+.cv-mobile-card {
+  display: none;
+}
+
 .footer {
   border-top: 1px solid var(--border);
   padding: var(--space-8) 0;
@@ -708,6 +714,38 @@ select:focus-visible {
   .fade-in {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding: var(--space-8) 0 var(--space-12);
+  }
+
+  .section {
+    margin-top: var(--space-10);
+  }
+
+  .card {
+    padding: var(--space-5);
+  }
+
+  .footer-wrap {
+    gap: var(--space-2);
+  }
+
+  .cv-embed {
+    display: none;
+  }
+
+  .cv-mobile-card {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .cv-mobile-card p {
+    margin: 0;
+    color: var(--muted);
   }
 }
 

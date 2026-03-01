@@ -443,6 +443,17 @@ body.imdb-case-active {
     font-size: clamp(2rem, 9vw, 2.45rem);
   }
 
+  .imdb-cta-row,
+  .imdb-footer-links {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .imdb-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .imdb-dataset-grid {
     grid-template-columns: 1fr;
   }
@@ -458,5 +469,36 @@ body.imdb-case-active {
 
   .imdb-value {
     justify-self: start;
+  }
+
+  .imdb-pill-row {
+    align-items: flex-start;
+  }
+
+  .imdb-pill-row span {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .imdb-section {
+    padding: 0.95rem;
+  }
+
+  .imdb-highlight,
+  .imdb-chart,
+  .imdb-controls,
+  .imdb-dataset-strip {
+    padding: 0.85rem;
+  }
+
+  .imdb-mini-table {
+    min-width: 560px;
+    font-size: 0.82rem;
+  }
+
+  .imdb-mini-table th,
+  .imdb-mini-table td {
+    padding: 0.55rem;
   }
 }

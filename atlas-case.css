@@ -1110,6 +1110,62 @@
   transform: translateY(-50%);
 }
 
+@media (max-width: 720px) {
+  .atlas-video-tab {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .atlas-code-head {
+    flex-wrap: wrap;
+  }
+
+  .atlas-cta-row,
+  .atlas-links-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-cta-row .btn,
+  .atlas-links-grid .btn {
+    width: 100%;
+  }
+
+  .atlas-lightbox {
+    padding: 0.8rem 0.55rem 1rem;
+  }
+
+  .atlas-lightbox-close,
+  .atlas-lightbox-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .atlas-lightbox-prev {
+    left: 0.55rem;
+  }
+
+  .atlas-lightbox-next {
+    right: 0.55rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .atlas-stress-persona-head {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-stress-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .atlas-stress-timeline li,
+  .atlas-mobile-links {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (min-width: 760px) {
   .atlas-video-stage {
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
