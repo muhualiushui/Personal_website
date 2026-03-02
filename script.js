@@ -144,7 +144,14 @@ function initRevealAnimations() {
   const elements = Array.from(document.querySelectorAll('.fade-in'));
   if (!elements.length) return;
 
-  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const skipRevealAnimation =
+    !('IntersectionObserver' in window) ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    window.matchMedia('(max-width: 1024px)').matches ||
+    window.matchMedia('(hover: none)').matches ||
+    window.matchMedia('(pointer: coarse)').matches;
+
+  if (skipRevealAnimation) {
     elements.forEach((el) => el.classList.add('visible'));
     return;
   }

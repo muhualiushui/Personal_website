@@ -698,6 +698,13 @@ select:focus-visible {
   transform: translateY(0);
 }
 
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
