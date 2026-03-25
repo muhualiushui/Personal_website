@@ -31,18 +31,15 @@
           <div class="nav-links">
             <a class="nav-link active" href="index.html">Home</a>
             <a class="nav-link" href="projects/index.html">Projects</a>
-            <a class="nav-link" href="cv.html">CV</a>
             <a class="nav-link" href="research.html">Research</a>
             <a class="nav-link" href="about.html">About</a>
-            <a class="nav-link" href="contact.html">Contact</a>
           </div>
           <div class="nav-actions">
             <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
-            <a class="btn btn-primary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
             <div class="icon-links" aria-label="Social links">
               <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
               <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
-              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+              <a class="icon-link" href="about.html#contact" aria-label="Contact">@</a>
             </div>
           </div>
         </nav>
@@ -66,10 +63,9 @@
             </p>
             <div class="btn-row">
               <a class="btn btn-primary" href="projects/index.html">View Projects</a>
-              <a class="btn btn-secondary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
               <a class="btn btn-ghost" href="https://github.com/muhualiushui">GitHub</a>
               <a class="btn btn-ghost" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
-              <a class="btn btn-ghost" href="mailto:muhualiushui@outlook.com">Email</a>
+              <a class="btn btn-ghost" href="about.html#contact">Contact</a>
             </div>
           </div>
           <div class="hero-visual">
@@ -87,55 +83,19 @@
           </div>
         </section>
 
-        <section class="section strip fade-in">
-          <div class="strip-items">
-            <span class="strip-item">Amazon</span>
-            <span class="strip-item">University of Washington</span>
-            <span class="strip-item">University of Illinois at Urbana-Champaign</span>
-            <span class="strip-item">Research Assistant</span>
-          </div>
-          <div class="chips">
-            <span class="chip">Python • R • PyTorch/HuggingFace </span>
-            <span class="chip">Unsupervised learning &amp; embeddings</span>
-            <span class="chip">Experimentation &amp; evaluation</span>
+        <section class="section journey fade-in" aria-label="Journey timeline">
+          <div class="journey-shell" data-journey-timeline="homepage">
+            <noscript>
+              <p class="journey-noscript">
+                Enable JavaScript to view the interactive journey timeline.
+              </p>
+            </noscript>
           </div>
         </section>
 
         <section class="section fade-in" aria-labelledby="featured-projects">
           <h2 id="featured-projects" class="section-title">Featured Projects</h2>
-          <p class="section-subtitle">Project-first highlights for fast recruiter scanning.</p>
           <div class="grid mt-6">
-            <article class="card project-card">
-              <h3>FNO-Diffusion for Brain MRI Segmentation</h3>
-              <p class="project-line"><strong>Problem:</strong> Improve segmentation quality for BraTS 2021 MRI volumes under multi-modal uncertainty.</p>
-              <p class="project-line"><strong>Method:</strong> Compared baseline FNO, diffusion U-shape, and an FNO-Diffusion hybrid with aligned evaluation.</p>
-              <p class="project-line"><strong>Result:</strong> Built a case-study workflow showing where hybrid modeling improves robustness across regions.</p>
-              <div class="chips">
-                <span class="tag">Medical AI</span><span class="tag">Diffusion</span><span class="tag">FNO</span>
-                <span class="tag">PyTorch</span>
-              </div>
-              <div class="project-actions">
-                <a class="btn btn-primary" href="projects/fno-diffusion-brain-mri/index.html">Case Study</a>
-                <a class="btn btn-secondary" href="https://github.com/muhualiushui/FNO_torch">GitHub</a>
-              </div>
-            </article>
-
-            <article class="card project-card">
-              <h3>IMDb Sentiment Analysis: RNN vs Pretrained Transformers</h3>
-              <p class="project-line"><strong>Problem:</strong> Compare RNN baseline quality against pretrained transformers on IMDb sentiment.</p>
-              <p class="project-line"><strong>Method:</strong> BiLSTM vs DistilGPT-2/XLNet with built-in vs MLP heads and max-length ablations.</p>
-              <p class="project-line"><strong>Result:</strong> XLNet reached 0.9578 TestAccuracy; longer context helped with diminishing returns after ~1024 tokens.</p>
-              <div class="chips">
-                <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">HuggingFace</span>
-                <span class="tag">NLP</span><span class="tag">Statistics</span>
-              </div>
-              <div class="project-actions">
-                <a class="btn btn-primary" href="projects/imdb-sentiment-analysis/index.html">Case Study</a>
-                <a class="btn btn-secondary" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
-                <a class="btn btn-ghost" href="projects/imdb-sentiment-analysis/index.html#imdb-results">Results</a>
-              </div>
-            </article>
-
             <article class="card project-card">
               <h3>AI Simulation with Mistral + Mixtral (ATLAS Showcase)</h3>
               <p class="project-line"><strong>Problem:</strong> Simulate realistic NPC action choices under hard room-access constraints.</p>
@@ -153,73 +113,6 @@
           </div>
         </section>
 
-        <section class="section fade-in" aria-labelledby="experience">
-          <h2 id="experience" class="section-title">Experience Snapshot</h2>
-          <div class="timeline mt-4">
-            <article class="timeline-item card">
-              <h3>UIUC-ATLAS | Machine Learning Analyzer</h3>
-              <p class="timeline-meta">Champaign, IL · May 2023 - May 2024</p>
-              <ul>
-                <li>Replicated a GPT-based AI town simulation using Mistral 7B / Mixtral 8x7B with a GPT-2 tokenizer from a research paper.</li>
-                <li>Rewrote query and algorithm logic from the original repository and analyzed NPC action behavior.</li>
-                <li>Designed prompt-engineering experiments to study conditional probability weaknesses in filtered AI outputs.</li>
-              </ul>
-            </article>
-
-            <article class="timeline-item card">
-              <h3>Manifold Learning Research | Contributor</h3>
-              <p class="timeline-meta">Seattle, WA · Jul. 2024 - Present</p>
-              <ul>
-                <li>Contributed standardized plotting and unsupervised embedding construction workflows for manifold learning studies.</li>
-                <li>Developed distortion visualization on C. elegans data to analyze density effects and neighborhood breaks.</li>
-                <li>Supported publication work on interactive metric-distortion visualization for nonlinear embeddings.</li>
-              </ul>
-            </article>
-
-            <article class="timeline-item card">
-              <h3>Amazon | Jr. Applied Scientist</h3>
-              <p class="timeline-meta">Seattle, WA · Oct. 2024 - Present</p>
-              <ul>
-                <li>Contributed to experimentation and analysis workflows tied to recommendation/embedding initiatives.</li>
-                <li>Built robust data processing steps for evaluation datasets and metric monitoring.</li>
-                <li>Communicated model tradeoffs and impact risks to technical and cross-functional stakeholders.</li>
-              </ul>
-            </article>
-          </div>
-        </section>
-
-        <section class="section fade-in" aria-labelledby="skills">
-          <h2 id="skills" class="section-title">Skills</h2>
-          <div class="skill-grid mt-4">
-            <article class="card skill-group">
-              <h3>ML / Stats</h3>
-              <p class="skill-list">
-                Unsupervised learning, representation learning, GLM/LMM/GEE, statistical inference, experimental design,
-                and evaluation metrics.
-              </p>
-            </article>
-            <article class="card skill-group">
-              <h3>Tools</h3>
-              <p class="skill-list">Python, R, PyTorch, HuggingFace, Shiny, Git, SQL.</p>
-            </article>
-            <article class="card skill-group">
-              <h3>Work Style</h3>
-              <p class="skill-list">Reproducibility, clean code, and clear communication with research and product teams.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section fade-in card" aria-labelledby="contact">
-          <h2 id="contact" class="section-title">Contact</h2>
-          <p class="section-subtitle">
-            Open to applied scientist / ML engineer opportunities and research collaborations.
-          </p>
-          <div class="btn-row mt-4">
-            <a class="btn btn-primary" href="mailto:muhualiushui@outlook.com">muhualiushui@outlook.com</a>
-            <a class="btn btn-secondary" href="https://github.com/muhualiushui">GitHub</a>
-            <a class="btn btn-secondary" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
-          </div>
-        </section>
       </div>
     </main>
 
@@ -228,10 +121,8 @@
         <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
         <div class="btn-row">
           <a href="projects/index.html">Projects</a>
-          <a href="cv.html">CV</a>
           <a href="research.html">Research</a>
           <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
           <a href="https://github.com/muhualiushui">GitHub</a>
           <a href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
         </div>

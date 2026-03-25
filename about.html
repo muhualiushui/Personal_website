@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About | ML / Applied Scientist Portfolio</title>
-    <meta name="description" content="About page with statistics and machine learning background." />
+    <meta name="description" content="About page with background, CV preview, and contact details." />
     <meta name="theme-color" content="#f6f8fb" />
     <link rel="shortcut icon" href="favicon.ico?v=20260301c" />
     <link rel="icon" href="site-icon-32.png?v=20260301c" sizes="32x32" type="image/png" />
@@ -25,18 +25,15 @@
           <div class="nav-links">
             <a class="nav-link" href="index.html">Home</a>
             <a class="nav-link" href="projects/index.html">Projects</a>
-            <a class="nav-link" href="cv.html">CV</a>
             <a class="nav-link" href="research.html">Research</a>
             <a class="nav-link active" href="about.html">About</a>
-            <a class="nav-link" href="contact.html">Contact</a>
           </div>
           <div class="nav-actions">
             <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
-            <a class="btn btn-primary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
             <div class="icon-links">
               <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
               <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
-              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+              <a class="icon-link" href="about.html#contact" aria-label="Contact">@</a>
             </div>
           </div>
         </nav>
@@ -63,6 +60,45 @@
             build intuition for machine learning and data-driven reasoning.
           </p>
         </section>
+
+        <section id="cv" class="section card fade-in">
+          <h2 class="section-title">CV</h2>
+          <p class="section-subtitle">Preview the PDF here or download the latest copy directly.</p>
+          <div class="btn-row mt-4">
+            <a class="btn btn-primary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV (PDF)</a>
+            <a class="btn btn-secondary" href="projects/index.html">View Projects</a>
+            <button
+              class="btn btn-secondary cv-preview-toggle"
+              type="button"
+              data-cv-toggle
+              aria-expanded="false"
+              aria-controls="cv-preview-panel"
+            >
+              Show PDF Preview
+            </button>
+          </div>
+          <div class="cv-mobile-card mt-4">
+            <p>The PDF preview is hidden on phones for a cleaner reading experience. Use the download button above to open the CV directly.</p>
+            <a class="btn btn-primary" href="assets/shared/documents/shuzhen-zhang-cv.pdf" download>Open CV on Phone</a>
+          </div>
+          <div id="cv-preview-panel" class="cv-preview-panel mt-4" hidden>
+            <object class="cv-embed" data="assets/shared/documents/shuzhen-zhang-cv.pdf" type="application/pdf">
+              <p>
+                PDF preview unavailable. <a href="assets/shared/documents/shuzhen-zhang-cv.pdf">Download CV</a>.
+              </p>
+            </object>
+          </div>
+        </section>
+
+        <section id="contact" class="section card fade-in">
+          <h2 class="section-title">Contact</h2>
+          <p class="section-subtitle">Open to applied scientist, ML engineer, and research collaboration opportunities.</p>
+          <div class="grid mt-4">
+            <a class="btn btn-primary" href="mailto:muhualiushui@outlook.com">muhualiushui@outlook.com</a>
+            <a class="btn btn-secondary" href="https://github.com/muhualiushui">GitHub</a>
+            <a class="btn btn-secondary" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
+          </div>
+        </section>
       </div>
     </main>
 
@@ -70,7 +106,7 @@
       <div class="container footer-wrap">
         <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
         <div class="btn-row">
-          <a href="index.html">Home</a><a href="projects/index.html">Projects</a><a href="cv.html">CV</a><a href="research.html">Research</a><a href="contact.html">Contact</a>
+          <a href="index.html">Home</a><a href="projects/index.html">Projects</a><a href="research.html">Research</a><a href="about.html">About</a>
         </div>
       </div>
     </footer>

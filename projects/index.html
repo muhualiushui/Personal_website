@@ -25,18 +25,15 @@
           <div class="nav-links">
             <a class="nav-link" href="../index.html">Home</a>
             <a class="nav-link active" href="./index.html">Projects</a>
-            <a class="nav-link" href="../cv.html">CV</a>
             <a class="nav-link" href="../research.html">Research</a>
             <a class="nav-link" href="../about.html">About</a>
-            <a class="nav-link" href="../contact.html">Contact</a>
           </div>
           <div class="nav-actions">
             <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to dark mode">Dark</button>
-            <a class="btn btn-primary" href="../assets/shared/documents/shuzhen-zhang-cv.pdf" download>Download CV</a>
             <div class="icon-links">
               <a class="icon-link" href="https://github.com/muhualiushui" aria-label="GitHub">GH</a>
               <a class="icon-link" href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265" aria-label="LinkedIn">IN</a>
-              <a class="icon-link" href="mailto:muhualiushui@outlook.com" aria-label="Email">@</a>
+              <a class="icon-link" href="../about.html#contact" aria-label="Contact">@</a>
             </div>
           </div>
         </nav>
@@ -47,18 +44,16 @@
       <div class="container">
         <section class="section fade-in">
           <h1 class="section-title">Projects</h1>
-          <p class="section-subtitle">Filter by theme and sort for quick review.</p>
+          <p class="section-subtitle">Browse projects by topic or sort by recency.</p>
 
           <div class="filter-bar card mt-4">
             <div class="chips">
               <button class="chip-btn active" data-filter="all">All</button>
+              <button class="chip-btn" data-filter="medical-ai">Medical AI</button>
               <button class="chip-btn" data-filter="nlp">NLP</button>
-              <button class="chip-btn" data-filter="embeddings">Embeddings</button>
-              <button class="chip-btn" data-filter="visualization">Visualization</button>
-              <button class="chip-btn" data-filter="simulation">Simulation</button>
-              <button class="chip-btn" data-filter="statistics">Statistics</button>
-              <button class="chip-btn" data-filter="research">Research</button>
-              <button class="chip-btn" data-filter="industry">Industry</button>
+              <button class="chip-btn" data-filter="llm-agents">LLM Agents</button>
+              <button class="chip-btn" data-filter="generative-models">Generative Models</button>
+              <button class="chip-btn" data-filter="pytorch">PyTorch</button>
             </div>
             <label>
               <span class="kv">Sort</span>
@@ -70,7 +65,7 @@
           </div>
 
           <div class="projects-grid mt-4">
-            <article class="card project-card" data-project-card data-tags="research visualization" data-date="2026-02-26" data-featured="1">
+            <article class="card project-card" data-project-card data-tags="medical-ai generative-models pytorch" data-date="2026-02-26" data-featured="1">
               <h2>FNO-Diffusion for Brain MRI Segmentation</h2>
               <p class="project-line">BraTS 2021 case study comparing FNO, diffusion U-shape, and an FNO-Diffusion hybrid.</p>
               <div class="chips"><span class="tag">Medical AI</span><span class="tag">Diffusion</span><span class="tag">FNO</span><span class="tag">PyTorch</span></div>
@@ -80,7 +75,7 @@
               </div>
             </article>
 
-            <article class="card project-card" data-project-card data-tags="nlp statistics research" data-date="2026-01-20" data-featured="1">
+            <article class="card project-card" data-project-card data-tags="nlp pytorch" data-date="2026-01-20" data-featured="1">
               <h2>IMDb Sentiment Analysis: RNN vs Pretrained Transformers</h2>
               <p class="project-line">BiLSTM baseline vs DistilGPT-2/XLNet with max-length and head ablations.</p>
               <div class="chips"><span class="tag">NLP</span><span class="tag">PyTorch</span><span class="tag">HuggingFace</span><span class="tag">Statistics</span></div>
@@ -90,7 +85,7 @@
               </div>
             </article>
 
-            <article class="card project-card" data-project-card data-tags="llm simulation research" data-date="2025-10-02" data-featured="1">
+            <article class="card project-card" data-project-card data-tags="llm-agents generative-models" data-date="2025-10-02" data-featured="1">
               <h2>AI Simulation with Mistral + Mixtral (ATLAS Showcase)</h2>
               <p class="project-line">Prompt-structured NPC action simulation with room-level constraints and Mistral-to-Mixtral comparisons.</p>
               <div class="chips"><span class="tag">LLM</span><span class="tag">Mistral 7B</span><span class="tag">Mixtral 8x7B</span><span class="tag">Simulation</span></div>
@@ -108,7 +103,7 @@
       <div class="container footer-wrap">
         <p>© <span data-current-year>2026</span> Shuzhen Zhang</p>
         <div class="btn-row">
-          <a href="../index.html">Home</a><a href="../cv.html">CV</a><a href="../research.html">Research</a><a href="../about.html">About</a><a href="../contact.html">Contact</a>
+          <a href="../index.html">Home</a><a href="../research.html">Research</a><a href="../about.html">About</a>
           <a href="https://github.com/muhualiushui">GitHub</a><a href="https://www.linkedin.com/in/shuzhen-zhang-ab4744265">LinkedIn</a>
         </div>
       </div>
