@@ -394,6 +394,10 @@
   gap: 0.7rem;
 }
 
+.atlas-pair-grid.atlas-pair-grid--single {
+  grid-template-columns: 1fr;
+}
+
 .atlas-pair-grid figure {
   margin: 0;
   border: 1px solid var(--border);
