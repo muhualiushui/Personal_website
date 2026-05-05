@@ -918,6 +918,296 @@
   font-size: 0.9rem;
 }
 
+.atlas-stress-overview {
+  margin-top: 0.95rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.atlas-stress-overview article {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-alt) 56%, var(--surface));
+  padding: 0.76rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.68rem;
+  align-items: start;
+}
+
+.atlas-stress-index {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: color-mix(in srgb, var(--accent) 78%, var(--text));
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.atlas-stress-overview h3,
+.atlas-stress-overview p {
+  margin: 0;
+}
+
+.atlas-stress-overview h3 {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--accent) 74%, var(--text));
+}
+
+.atlas-stress-overview p {
+  margin-top: 0.18rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.atlas-persona-matrix {
+  margin-top: 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+  border-radius: 16px;
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.atlas-persona-matrix-head,
+.atlas-persona-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(210px, 0.78fr);
+}
+
+.atlas-persona-matrix-head {
+  background: color-mix(in srgb, var(--surface-alt) 78%, var(--surface));
+  border-bottom: 1px solid var(--border);
+}
+
+.atlas-persona-matrix-head span {
+  padding: 0.58rem 0.8rem;
+  color: color-mix(in srgb, var(--text) 70%, var(--muted));
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.atlas-persona-row + .atlas-persona-row {
+  border-top: 1px solid var(--border);
+}
+
+.atlas-persona-cell,
+.atlas-persona-signal {
+  padding: 0.82rem;
+}
+
+.atlas-persona-cell {
+  border-right: 1px solid var(--border);
+  display: grid;
+  gap: 0.64rem;
+}
+
+.atlas-persona-cell--baseline {
+  background: color-mix(in srgb, #64748b 4%, var(--surface));
+}
+
+.atlas-persona-cell--stress {
+  background: color-mix(in srgb, #b91c1c 3%, var(--surface));
+}
+
+.atlas-persona-profile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.62rem;
+  align-items: center;
+}
+
+.atlas-persona-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: left center;
+  border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+  background: #f4f7fb;
+  cursor: zoom-in;
+}
+
+.atlas-persona-profile h3,
+.atlas-persona-profile p,
+.atlas-persona-traits,
+.atlas-persona-traits div,
+.atlas-persona-traits dt,
+.atlas-persona-traits dd {
+  margin: 0;
+}
+
+.atlas-persona-profile h3 {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.atlas-persona-profile p {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.atlas-persona-type {
+  margin-bottom: 0.1rem !important;
+  color: color-mix(in srgb, var(--accent) 70%, var(--muted)) !important;
+  font-size: 0.68rem !important;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.atlas-persona-traits {
+  display: grid;
+  gap: 0.48rem;
+}
+
+.atlas-persona-traits div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.atlas-persona-traits dt {
+  color: color-mix(in srgb, var(--text) 56%, var(--muted));
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.atlas-persona-traits dd {
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.atlas-persona-signal {
+  display: grid;
+  align-content: center;
+  gap: 0.38rem;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+}
+
+.atlas-signal-label {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  color: color-mix(in srgb, var(--accent) 78%, var(--text));
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.atlas-persona-signal p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.atlas-eval-grid {
+  margin-top: 0.95rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.72rem;
+}
+
+.atlas-eval-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-alt) 58%, var(--surface));
+  padding: 0.86rem;
+  display: grid;
+  gap: 0.56rem;
+}
+
+.atlas-eval-card--result {
+  border-color: color-mix(in srgb, #d97706 32%, var(--border));
+  background: color-mix(in srgb, #d97706 6%, var(--surface));
+}
+
+.atlas-eval-eyebrow {
+  margin: 0;
+  color: color-mix(in srgb, var(--accent) 72%, var(--text));
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.atlas-eval-card h3 {
+  margin: 0;
+  font-size: 1.02rem;
+}
+
+.atlas-compact-list {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.34rem;
+  color: var(--muted);
+}
+
+.atlas-compact-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.atlas-compact-timeline li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.52rem;
+  align-items: start;
+  border: 1px solid color-mix(in srgb, #d97706 20%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 92%, #fff);
+  padding: 0.56rem 0.62rem;
+}
+
+.atlas-compact-timeline span {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #92400e;
+  background: color-mix(in srgb, #f59e0b 28%, #ffffff);
+  border: 1px solid color-mix(in srgb, #d97706 36%, var(--border));
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.atlas-compact-timeline p,
+.atlas-result-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.atlas-compact-timeline strong,
+.atlas-result-note strong {
+  color: var(--text);
+}
+
+.atlas-result-note {
+  border-top: 1px solid color-mix(in srgb, #d97706 24%, var(--border));
+  padding-top: 0.62rem;
+}
+
 .atlas-before-after {
   margin-top: 1rem;
   padding: 0.85rem;
@@ -1110,6 +1400,26 @@
   transform: translateY(-50%);
 }
 
+@media (max-width: 980px) {
+  .atlas-stress-overview,
+  .atlas-eval-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-persona-matrix-head {
+    display: none;
+  }
+
+  .atlas-persona-row {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-persona-cell {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
 @media (max-width: 720px) {
   .atlas-video-tab {
     width: 100%;
@@ -1129,6 +1439,12 @@
   .atlas-cta-row .btn,
   .atlas-links-grid .btn {
     width: 100%;
+  }
+
+  .atlas-persona-cell,
+  .atlas-persona-signal,
+  .atlas-eval-card {
+    padding: 0.72rem;
   }
 
   .atlas-lightbox {
@@ -1151,6 +1467,15 @@
 }
 
 @media (max-width: 520px) {
+  .atlas-persona-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .atlas-persona-avatar {
+    width: 68px;
+    height: 68px;
+  }
+
   .atlas-stress-persona-head {
     grid-template-columns: 1fr;
   }

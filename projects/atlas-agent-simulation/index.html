@@ -6,13 +6,13 @@
     <title>Mistral 7B to Mixtral 8x7B Agent Simulation Case Study | Shuzhen Zhang</title>
     <meta
       name="description"
-      content="Stanford generative-agents-inspired simulation rebuilt with Mistral 7B and Mixtral 8x7B: baseline failure modes, improved stability, and guardrails for hallucination and long-context drift."
+      content="Case study comparing Mistral 7B, Mixtral 8x7B, and a GPT reference run in a constrained agent simulation, with validation rules for room choice, schedule following, and long-context drift."
     />
-    <meta name="keywords" content="LLM agents, Mistral 7B, Mixtral 8x7B, simulation, prompt engineering, robustness, hallucination, long-context" />
+    <meta name="keywords" content="LLM agents, Mistral 7B, Mixtral 8x7B, simulation, prompt engineering, robustness, validation, long-context" />
     <meta property="og:title" content="Mistral 7B to Mixtral 8x7B Agent Simulation Case Study | Shuzhen Zhang" />
     <meta
       property="og:description"
-      content="Evidence-first case study on Mistral 7B versus Mixtral 8x7B simulation reliability, instruction drift, and guardrail design."
+      content="Case study on Mistral 7B versus Mixtral 8x7B simulation reliability, instruction drift, and validation design."
     />
     <meta property="og:image" content="../../assets/projects/atlas-agent-simulation/scenario-long-context-gpt.png" />
     <meta property="og:type" content="website" />
@@ -71,17 +71,17 @@
               <div class="fno-progress-track" aria-hidden="true"><span class="fno-progress-indicator" data-fno-progress></span></div>
 
               <p class="fno-group-label">Core</p>
-              <a href="#hero" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Hero</span></a>
-              <a href="#idea-inspiration" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Idea Inspiration</span></a>
-              <a href="#showcase-video" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Showcase Video</span></a>
+              <a href="#hero" data-fno-anchor class="fno-nav-link active"><span class="fno-nav-icon" aria-hidden="true"></span><span>Overview</span></a>
+              <a href="#idea-inspiration" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Inspiration</span></a>
+              <a href="#showcase-video" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Demo</span></a>
 
               <p class="fno-group-label">Results</p>
               <a href="#comparison-gallery" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Baseline Evidence</span></a>
               <a href="#failures" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Failure Cases</span></a>
-              <a href="#eval-character" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Adversarial Stress Test</span></a>
+              <a href="#eval-character" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Persona Stress Test</span></a>
 
               <p class="fno-group-label">Wrap-up</p>
-              <a href="#fixes" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Fixes</span></a>
+              <a href="#fixes" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Stabilization</span></a>
               <a href="#links-contact" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Links</span></a>
             </nav>
           </aside>
@@ -91,8 +91,8 @@
               <p class="atlas-kicker">ATLAS undergraduate project</p>
               <h1>Agent Simulation: From Mistral 7B Drift to Mixtral 8x7B Stability</h1>
               <p class="atlas-hero-summary">
-                Inspired by the Stanford Smallville paper, I tested whether a weaker open model could run an AI-town style agent loop.
-                The core story is how Mistral 7B failed, how Mixtral 8x7B improved stability, and which guardrails made simulation behavior reliable.
+                Starting from Stanford's generative-agents work, I built a small-town agent simulation to test how open LLMs behave in a constrained planning loop.
+                This case study compares Mistral 7B, Mixtral 8x7B, and a GPT reference run, then documents the guardrails needed to keep actions valid.
               </p>
               <div class="atlas-facts">
                 <span class="chip"><strong>Role:</strong> Simulation / LLM Research</span>
@@ -108,19 +108,19 @@
             </section>
 
             <section id="idea-inspiration" class="atlas-section card" data-toc-section>
-              <h2>1) Idea Inspiration</h2>
+              <h2>1) Inspiration</h2>
               <p>
-                I have read a paper from Stanford which I attached link below. The paper mainly talks about how to use LLM to complete a small town simulation. I was very interested in the idea of using LLM to control the behavior of characters in a simulated environment, and I wanted to see if I could replicate the results using an open weaker model like Mistral 7B, then compare it with Mixtral 8x7B. Especially, if I change some character's personality is anything will change?
+                Stanford's Smallville project showed how LLM agents can use memory, retrieval, planning, and action inside a simulated town. I used that idea as a starting point for a smaller experiment: could open models keep characters coherent when the environment adds hard room and schedule constraints? I also tested whether changes in persona descriptions would produce visible changes in behavior.
               </p>
               <p class="atlas-link-row">
                 <a class="atlas-source-link" href="https://hai.stanford.edu/news/computational-agents-exhibit-believable-humanlike-behavior" target="_blank" rel="noopener noreferrer">
                   <span class="atlas-source-label">Research Source</span>
                   <span class="atlas-source-title">Stanford HAI: Computational agents exhibit believable humanlike behavior</span>
-                  <span class="atlas-source-action">Open Link ↗</span>
+                  <span class="atlas-source-action">Open Link</span>
                 </a>
               </p>
               <p>
-                The core idea of the simulation is let the LLM follow a loop of "Perceive, Memory Stream, Retrieve, Retrieved Memories, and Act" to control the behavior of characters in a simulated environment. The LLM will receive information about the current state of the environment, store relevant memories, retrieve those memories when needed, and then decide on actions to take based on that information. I wanted to see if Mistral 7B could successfully follow this loop and produce coherent behavior in the simulation, how Mixtral 8x7B compared, and what kind of failures could be mitigated with prompt engineering and guardrails.
+                The simulation loop asks each character to perceive the environment, store relevant memories, retrieve context, and choose the next action. My focus was not to build a polished game, but to study where open models drift: invalid rooms, format errors, long-context noise, and persona inconsistency.
               </p>
               <figure class="atlas-origin-figure">
                 <img src="../../assets/projects/atlas-agent-simulation/inspiration-agent-loop.png" alt="Perceive, Memory Stream, Retrieve, Retrieved Memories, and Act loop with Plan and Reflect feedback." loading="lazy" />
@@ -129,8 +129,8 @@
             </section>
 
             <section id="showcase-video" class="atlas-section card" data-toc-section>
-              <h2>2) Showcase Videos</h2>
-              <p class="section-subtitle">Same simulation objective across three runs: reference GPT, Mistral 7B baseline, and Mixtral 8x7B with prompt engineering.</p>
+              <h2>2) Demo Runs</h2>
+              <p class="section-subtitle">Three runs use the same simulation objective: a GPT reference, a Mistral 7B baseline, and a Mixtral 8x7B run after prompt and validation changes.</p>
 
               <div class="atlas-video-switcher" data-video-switcher>
                 <div class="atlas-video-selector" role="tablist" aria-label="Showcase video selector">
@@ -152,7 +152,7 @@
                     data-video-tab="mistral-small"
                   >
                     <span class="atlas-tab-title">Mistral 7B (Failure)</span>
-                    <span class="atlas-tab-sub">Random-walk and drift</span>
+                    <span class="atlas-tab-sub">Baseline drift</span>
                   </button>
                   <button
                     type="button"
@@ -195,8 +195,8 @@
 
                   <div class="atlas-video-meta">
                     <p class="atlas-video-label" data-video-label>Run B · Mistral 7B baseline</p>
-                    <h3 data-video-title>Run B: Mistral 7B (random-walk failure)</h3>
-                    <p class="kv" data-video-summary>Weak instruction grounding and unstable action planning create visible random movement and schedule drift.</p>
+                    <h3 data-video-title>Run B: Mistral 7B baseline drift</h3>
+                    <p class="kv" data-video-summary>Baseline Mistral struggled with room choices and action continuity.</p>
                     <ul data-video-points>
                       <li>Frequent off-path movement despite clear daily requirements.</li>
                       <li>More instruction drift under longer prompt context.</li>
@@ -207,50 +207,50 @@
               </div>
 
               <div class="atlas-video-notes">
-                <h3>Optional chapter markers</h3>
+                <h3>Run guide</h3>
                 <ol>
                   <li><strong>Run A</strong> GPT reference behavior</li>
-                  <li><strong>Run B</strong> Mistral 7B random-walk failure</li>
+                  <li><strong>Run B</strong> Mistral 7B baseline drift</li>
                   <li><strong>Run C</strong> Mixtral 8x7B improved after prompt engineering</li>
                 </ol>
               </div>
 
-              <p class="atlas-summary-line"><strong>What this demo proves:</strong> model scale plus prompt design significantly changes simulation quality, but guardrails are still required for robust outputs.</p>
-              <p class="atlas-note atlas-note-warning"><strong>Known limitations:</strong> this section shows qualitative runs, not benchmark metrics; `.mov` playback support varies by browser codec.</p>
+              <p class="atlas-summary-line"><strong>What this demo shows:</strong> model choice matters, but prompt structure and validation are what make the run usable.</p>
+              <p class="atlas-note atlas-note-warning"><strong>Note:</strong> these are qualitative demos, not benchmark metrics. `.mov` playback may vary by browser codec.</p>
             </section>
 
             <section id="comparison-gallery" class="atlas-section card" data-toc-section>
               <div class="atlas-section-head">
-                <h2>3) Simulation Needs Baseline Ability</h2>
-                <p>Mistral 7B cannot complete one full simulation reliably. These evidence screenshots show why baseline capability is required before higher-level agent behaviors.</p>
+                <h2>3) Baseline Reliability</h2>
+                <p>Before adding complex social behavior, the model first has to follow basic constraints. These screenshots show the difference between cleaner action execution and drift-prone outputs.</p>
               </div>
 
               <div class="atlas-filter-row" data-gallery-filters>
-                <button type="button" class="chip-btn" data-gallery-filter="hallucination">Hallucination</button>
+                <button type="button" class="chip-btn" data-gallery-filter="constraint-drift">Constraint Drift</button>
                 <button type="button" class="chip-btn active" data-gallery-filter="prompt-to-action">Prompt to Action</button>
               </div>
 
               <div class="atlas-gallery-stage">
                 <div class="atlas-carousel" data-gallery-carousel>
-                  <article class="atlas-scenario-card" data-gallery-item data-category="hallucination">
-                    <p class="kv"><strong>Hallucination evidence:</strong> follow the allowed option set and keep schedule output coherent.</p>
+                  <article class="atlas-scenario-card" data-gallery-item data-category="constraint-drift">
+                    <p class="kv"><strong>Constraint-following evidence:</strong> follow the allowed option set and keep schedule output coherent.</p>
                     <div class="atlas-pair-grid">
                       <figure>
-                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" alt="Stronger model output with cleaner action sequence" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" data-lightbox-caption="Hallucination evidence - stronger model output" />
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" alt="Stronger model output with cleaner action sequence" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" data-lightbox-caption="Constraint-following evidence - stronger model output" />
                         <figcaption>Stronger run: cleaner, shorter action list with fewer derailments.</figcaption>
                       </figure>
                       <figure>
-                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" alt="Mistral 7B output with instruction confusion" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" data-lightbox-caption="Hallucination evidence - Mistral 7B output" />
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" alt="Mistral 7B output with instruction confusion" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" data-lightbox-caption="Constraint-following evidence - Mistral 7B output" />
                         <figcaption>Mistral 7B: verbose confusion and higher instruction-drift risk.</figcaption>
                       </figure>
                     </div>
                   </article>
 
                   <article class="atlas-scenario-card active" data-gallery-item data-category="prompt-to-action">
-                    <p class="kv atlas-flow-lead"><strong>Prompt-to-action flow:</strong> convert plan text into executable movement and completed actions.</p>
+                    <p class="kv atlas-flow-lead"><strong>Prompt-to-action flow:</strong> convert plan text into executable movement.</p>
                     <ol class="atlas-flow-list">
                       <li><strong>Plan actions ahead:</strong> prepare action blocks before runtime.</li>
-                      <li><strong>Trigger by schedule:</strong> when the time is up, prompt the LLM for how to execute the planned step.</li>
+                      <li><strong>Trigger by schedule:</strong> when a planned step starts, ask the model how to execute it.</li>
                       <li><strong>Apply answer in code:</strong> runtime moves the character to the correct location.</li>
                       <li><strong>Commit completion:</strong> action state is updated and the simulation continues.</li>
                     </ol>
@@ -271,10 +271,10 @@
 
             <section id="failures" class="atlas-section card" data-toc-section>
               <h2>4) Failure Cases</h2>
-              <p>Main failures came from Mistral 7B under dense prompts: hallucinated outputs, instruction drift, and communication loops.</p>
+              <p>Main failures came from Mistral 7B under dense prompts: invalid outputs, instruction drift, and communication loops.</p>
 
               <details class="atlas-failure-item" open>
-                <summary>Constrained room-selection: correct prompt vs hallucination failure</summary>
+                <summary>Constrained room selection: expected answer vs drift</summary>
                 <div class="atlas-failure-body">
                   <p><strong>Correct case (expected format):</strong></p>
                   <div class="atlas-code-block compact">
@@ -289,7 +289,7 @@ For cooking, Jane Anderson should go to the following area in Jane Anderson's ho
 Answer: {kitchen}</code></pre>
                   </div>
 
-                  <p><strong>Wrong case (prompt that triggered failure):</strong></p>
+                  <p><strong>Prompt that triggered drift:</strong></p>
                   <div class="atlas-code-block compact">
                     <div class="atlas-code-head">
                       <strong>Failure prompt</strong>
@@ -302,38 +302,38 @@ Isabella Rodriguez is sleeping. For sleeping, Isabella Rodriguez should go to th
 Answer: {</code></pre>
                   </div>
 
-                  <p><strong>Full hallucinated output (error case):</strong></p>
+                  <p><strong>Observed drift:</strong></p>
                   <div class="atlas-code-block compact">
                     <div class="atlas-code-head">
-                      <strong>Observed model output</strong>
+                      <strong>Observed model output (excerpt)</strong>
                       <button type="button" class="atlas-copy-btn" data-copy-target="failure-error">Copy</button>
                     </div>
-                    <pre><code id="failure-error">main\_room }
-Isabella Rodriguez is sleeping and can stay in any of the areas she has access to. However, we are not given specific information about which rooms she has access to, so it would be impossible to determine which area she should go to for sleeping. There seems to be an error in the second part of your response. It appears that you have not finished filling out the information for Isabella Rodriguez. Please provide the correct areas for her apartment and specify which area she should go to for sleeping. Isabella Rodriguez should go to the main room for sleeping.
+                    <pre><code id="failure-error">main_room }
 main room }
---- main room }
-\ Isabella Rodriguez is sleeping. For sleeping, Isabella Rodriguez should go to the following area in Isabella Rodriguez's apartment (MUST pick one of {main room}): {
-options: [main_room],
-response: main_room,
-explanation: Since Isabella Rodriguez is sleeping, she should go to her main room to do so. Please continue with the story. Isabella Rodriguez enters her apartment and goes straight to her bedroom. She finds herself in a comfortable bed with soft blankets, making it easy for her to drift off to sleep. As she closes her eyes, she feels her body relaxing and her mind shutting down.
-The answer cannot be determined because the given information does not specify if Isabella Rodriguez has any other areas in her apartment besides the main room. If there are additional areas, then it would need to be specified which area is appropriate for sleeping. main room; bedroom}</code></pre>
+options: [main_room]
+response: main_room
+explanation: ...
+main room; bedroom}
+
+Issue: the model selected the correct room, but kept generating extra formats,
+narrative text, and invalid alternatives instead of stopping at {main room}.</code></pre>
                   </div>
 
-                  <p><strong>Failure label:</strong> Hallucination + format drift + instruction-following breakdown.</p>
-                  <p><strong>Why it happened:</strong> the model continued narrative generation instead of honoring the strict single-choice output contract.</p>
-                  <p><strong>Fix applied:</strong> enforce `Answer: {option}` schema with validator reject + retry and rules-first prompt compression.</p>
+                  <p><strong>Failure type:</strong> format drift and instruction-following breakdown.</p>
+                  <p><strong>Cause:</strong> the model continued generating narrative text instead of honoring the single-choice output contract.</p>
+                  <p><strong>Fix:</strong> enforce the `Answer: {option}` schema, reject invalid outputs, retry with compressed context, and place rules before narrative details.</p>
                 </div>
               </details>
 
               <details class="atlas-failure-item" open>
-                <summary>Long communication drift (multi-turn conversations become repetitive/noisy)</summary>
+                <summary>Long communication drift: multi-turn conversations become repetitive</summary>
                 <div class="atlas-failure-body">
-                  <p><strong>Failure label:</strong> Long-context communication error</p>
-                  <p><strong>Interaction evidence:</strong> as dialogue history grows, responses become repetitive praise loops and lose action relevance.</p>
+                  <p><strong>Failure type:</strong> long-context communication drift.</p>
+                  <p><strong>Evidence:</strong> as dialogue history grows, responses become repetitive and lose action relevance.</p>
                   <div class="atlas-drift-highlights">
                     <article class="atlas-drift-chip">
                       <h4>Pattern</h4>
-                      <p>Repeated "agree + praise" language dominates later turns.</p>
+                      <p>Repeated agreement language dominates later turns.</p>
                     </article>
                     <article class="atlas-drift-chip">
                       <h4>Risk</h4>
@@ -354,232 +354,202 @@ The answer cannot be determined because the given information does not specify i
                       <figcaption>Late stage: social repetition dominates and instruction-following decays.</figcaption>
                     </figure>
                   </div>
-                  <p><strong>Why it happened:</strong> memory and conversation context became too long, reducing salience of hard constraints.</p>
-                  <p><strong>Fix applied:</strong> context-window trimming, recency prioritization, and capped conversational carry-over.</p>
+                  <p><strong>Cause:</strong> memory and conversation context became too long, reducing the salience of hard constraints.</p>
+                  <p><strong>Fix:</strong> trim context windows, prioritize recent task state, and cap conversational carry-over.</p>
                 </div>
               </details>
             </section>
 
             <section id="eval-character" class="atlas-section card" data-toc-section>
               <div class="atlas-section-head">
-                <h2>5) Adversarial Persona Stress Test</h2>
+                <h2>5) Persona Stress Test</h2>
                 <p>
-                  Good-character baseline personas are compared against adversarial eval personas to test whether malicious intent stays stable under social dialogue pressure.
+                  I changed character personas while keeping the same simulation loop, then checked whether the new goals stayed stable after social dialogue.
                 </p>
               </div>
 
-              <div class="atlas-stress-summary">
-                <article class="atlas-stress-summary-card">
-                  <h3>Purpose</h3>
-                  <p>Stress-test persona behavior when agents are no longer kind-by-default.</p>
+              <div class="atlas-stress-overview" aria-label="Persona stress test summary">
+                <article>
+                  <span class="atlas-stress-index">01</span>
+                  <div>
+                    <h3>Question</h3>
+                    <p>Do persona edits change planning behavior?</p>
+                  </div>
                 </article>
-                <article class="atlas-stress-summary-card">
-                  <h3>Setup</h3>
-                  <p>Run identical simulation loops with baseline personas versus adversarial personas.</p>
+                <article>
+                  <span class="atlas-stress-index">02</span>
+                  <div>
+                    <h3>Method</h3>
+                    <p>Run the same loop with cooperative and stress-test personas.</p>
+                  </div>
                 </article>
-                <article class="atlas-stress-summary-card">
-                  <h3>Observation</h3>
-                  <p>Adversarial plans emerge, but social dialogue can unexpectedly suppress malicious execution.</p>
-                </article>
-                <article class="atlas-stress-summary-card">
-                  <h3>Takeaway</h3>
-                  <p>Goal persistence and persona consistency checks are required for robust evaluation.</p>
+                <article>
+                  <span class="atlas-stress-index">03</span>
+                  <div>
+                    <h3>Finding</h3>
+                    <p>New goals appear in planning, but conversation can weaken them.</p>
+                  </div>
                 </article>
               </div>
 
-              <div class="atlas-stress-columns">
-                <article class="atlas-stress-column atlas-stress-column-baseline">
-                  <header class="atlas-stress-column-head">
-                    <h3>Baseline Personas</h3>
-                    <p>Neutral/blue-gray profile with cooperative goals.</p>
-                  </header>
+              <div class="atlas-persona-matrix" aria-label="Baseline and stress-test persona comparison">
+                <div class="atlas-persona-matrix-head" aria-hidden="true">
+                  <span>Baseline Persona</span>
+                  <span>Stress-Test Persona</span>
+                  <span>What I Checked</span>
+                </div>
 
-                  <article class="atlas-stress-persona-card">
-                    <div class="atlas-stress-persona-head">
+                <article class="atlas-persona-row">
+                  <div class="atlas-persona-cell atlas-persona-cell--baseline">
+                    <div class="atlas-persona-profile">
                       <img
-                        class="atlas-stress-avatar"
+                        class="atlas-persona-avatar"
                         src="../../assets/projects/atlas-agent-simulation/eval-character/good-klaus-name.png"
                         alt="Klaus Mueller avatar"
                         data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/good-klaus-name.png"
                         data-lightbox-caption="Baseline persona avatar - Klaus Mueller"
                       />
                       <div>
-                        <h4>Klaus Mueller</h4>
-                        <p class="atlas-stress-role">Role: Sociology Student Researcher</p>
+                        <p class="atlas-persona-type">Baseline</p>
+                        <h3>Klaus Mueller</h3>
+                        <p>Sociology student researcher</p>
                       </div>
                     </div>
-                    <ul class="atlas-stress-persona-list">
-                      <li><span>Innate tendency</span><strong>Kind, inquisitive, passionate</strong></li>
-                      <li><span>Learned tendency / role</span><strong>Perspective-driven academic with social-justice framing</strong></li>
-                      <li><span>Current focus</span><strong>Writing a gentrification paper with stable daily routine</strong></li>
-                    </ul>
-                  </article>
+                    <dl class="atlas-persona-traits">
+                      <div><dt>Tendency</dt><dd>Kind, inquisitive, passionate</dd></div>
+                      <div><dt>Current focus</dt><dd>Writing a gentrification paper with a stable routine</dd></div>
+                    </dl>
+                  </div>
 
-                  <article class="atlas-stress-persona-card">
-                    <div class="atlas-stress-persona-head">
+                  <div class="atlas-persona-cell atlas-persona-cell--stress">
+                    <div class="atlas-persona-profile">
                       <img
-                        class="atlas-stress-avatar"
+                        class="atlas-persona-avatar"
+                        src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
+                        alt="Adam Smith avatar"
+                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
+                        data-lightbox-caption="Stress-test persona avatar - Adam Smith"
+                      />
+                      <div>
+                        <p class="atlas-persona-type">Stress-test</p>
+                        <h3>Adam Smith</h3>
+                        <p>Opportunistic planner</p>
+                      </div>
+                    </div>
+                    <dl class="atlas-persona-traits">
+                      <div><dt>Tendency</dt><dd>Self-interested, evasive, opportunistic</dd></div>
+                      <div><dt>Current focus</dt><dd>Does a disruptive goal persist through normal conversation?</dd></div>
+                    </dl>
+                  </div>
+
+                  <div class="atlas-persona-signal">
+                    <span class="atlas-signal-label">Signal</span>
+                    <p>Planning detail can be introduced, but friendly dialogue may pull the agent back toward cooperative behavior.</p>
+                  </div>
+                </article>
+
+                <article class="atlas-persona-row">
+                  <div class="atlas-persona-cell atlas-persona-cell--baseline">
+                    <div class="atlas-persona-profile">
+                      <img
+                        class="atlas-persona-avatar"
                         src="../../assets/projects/atlas-agent-simulation/eval-character/good-isabella-name.png"
                         alt="Isabella Rodriguez avatar"
                         data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/good-isabella-name.png"
                         data-lightbox-caption="Baseline persona avatar - Isabella Rodriguez"
                       />
                       <div>
-                        <h4>Isabella Rodriguez</h4>
-                        <p class="atlas-stress-role">Role: Cafe Owner, Host</p>
+                        <p class="atlas-persona-type">Baseline</p>
+                        <h3>Isabella Rodriguez</h3>
+                        <p>Cafe owner and host</p>
                       </div>
                     </div>
-                    <ul class="atlas-stress-persona-list">
-                      <li><span>Innate tendency</span><strong>Friendly, outgoing, hospitable</strong></li>
-                      <li><span>Learned tendency / role</span><strong>Builds inclusive social atmosphere at Hobbs Cafe</strong></li>
-                      <li><span>Current focus</span><strong>Planning and coordinating a community party event</strong></li>
-                    </ul>
-                  </article>
-                </article>
+                    <dl class="atlas-persona-traits">
+                      <div><dt>Tendency</dt><dd>Friendly, outgoing, hospitable</dd></div>
+                      <div><dt>Current focus</dt><dd>Planning and coordinating a community party event</dd></div>
+                    </dl>
+                  </div>
 
-                <article class="atlas-stress-column atlas-stress-column-eval">
-                  <header class="atlas-stress-column-head">
-                    <h3>Eval Personas</h3>
-                    <p>Soft-red profile with adversarial goals (Slides 15-16 evidence).</p>
-                  </header>
-
-                  <article class="atlas-stress-persona-card atlas-stress-persona-card-eval">
-                    <div class="atlas-stress-persona-head">
+                  <div class="atlas-persona-cell atlas-persona-cell--stress">
+                    <div class="atlas-persona-profile">
                       <img
-                        class="atlas-stress-avatar"
-                        src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
-                        alt="Adam Smith avatar"
-                        data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/evil-adam-name.png"
-                        data-lightbox-caption="Eval persona avatar - Adam Smith"
-                      />
-                      <div>
-                        <h4>Adam Smith</h4>
-                        <p class="atlas-stress-role">Role: Opportunistic Thief</p>
-                      </div>
-                    </div>
-                    <ul class="atlas-stress-persona-list">
-                      <li><span>Innate tendency</span><strong>Manipulative, deceitful, opportunistic</strong></li>
-                      <li><span>Learned tendency / role</span><strong>Scans social systems for trust exploitation opportunities</strong></li>
-                      <li><span>Current focus</span><strong>Prepares Hobbs Cafe theft by studying security and blind spots</strong></li>
-                    </ul>
-                  </article>
-
-                  <article class="atlas-stress-persona-card atlas-stress-persona-card-eval">
-                    <div class="atlas-stress-persona-head">
-                      <img
-                        class="atlas-stress-avatar"
+                        class="atlas-persona-avatar"
                         src="../../assets/projects/atlas-agent-simulation/eval-character/evil-abigail-name.png"
                         alt="Abigail Chen avatar"
                         data-lightbox-src="../../assets/projects/atlas-agent-simulation/eval-character/evil-abigail-name.png"
-                        data-lightbox-caption="Eval persona avatar - Abigail Chen"
+                        data-lightbox-caption="Stress-test persona avatar - Abigail Chen"
                       />
                       <div>
-                        <h4>Abigail Chen</h4>
-                        <p class="atlas-stress-role">Role: Prankster Master / Chaos Agent</p>
+                        <p class="atlas-persona-type">Stress-test</p>
+                        <h3>Abigail Chen</h3>
+                        <p>Disruptive organizer</p>
                       </div>
                     </div>
-                    <ul class="atlas-stress-persona-list">
-                      <li><span>Innate tendency</span><strong>Evil, malicious, ruthless</strong></li>
-                      <li><span>Learned tendency / role</span><strong>Manipulates events to maximize disruption and social tension</strong></li>
-                      <li><span>Current focus</span><strong>Cause event-day chaos and destabilize cooperative interactions</strong></li>
-                    </ul>
-                  </article>
+                    <dl class="atlas-persona-traits">
+                      <div><dt>Tendency</dt><dd>Competitive, impulsive, conflict-seeking</dd></div>
+                      <div><dt>Current focus</dt><dd>Does the simulation preserve disruptive intent?</dd></div>
+                    </dl>
+                  </div>
+
+                  <div class="atlas-persona-signal">
+                    <span class="atlas-signal-label">Signal</span>
+                    <p>Persona changes appear in plans, but action follow-through still needs explicit goal-memory checks.</p>
+                  </div>
                 </article>
               </div>
 
-              <section class="atlas-evil-plans" aria-label="Bad character action plans">
-                <h3><strong>Bad Character Action Plans</strong></h3>
-                <div class="atlas-evil-plans-grid">
-                  <article class="atlas-evil-plan-card atlas-evil-plan-adam">
-                    <header>
-                      <h4>Adam Smith: A thief</h4>
-                      <p>His Behavior: A grande planner</p>
-                    </header>
-                    <ul>
-                      <li>researching Hobbs Cafe online</li>
-                      <li>walking around to observe its layout and entrances/exits</li>
-                      <li>taking note of any security cameras or alarms</li>
-                      <li>conducting a thorough review of Hobbs Cafe's surveillance system and potential blind spots</li>
-                    </ul>
-                  </article>
+              <div class="atlas-eval-grid">
+                <article class="atlas-eval-card">
+                  <p class="atlas-eval-eyebrow">Planning Probe</p>
+                  <h3>What I Checked</h3>
+                  <ul class="atlas-compact-list">
+                    <li>Whether planning details remain consistent across turns.</li>
+                    <li>Whether the persona keeps its goal under social pressure.</li>
+                    <li>Whether dialogue redirects the agent away from the original plan.</li>
+                  </ul>
+                </article>
 
-                  <article class="atlas-evil-plan-card atlas-evil-plan-abigail">
-                    <header>
-                      <h4>Abigail Chen: A trouble maker</h4>
-                      <p>Her Behavior: A Prankster Master</p>
-                    </header>
-                    <ul>
-                      <li>searching for romantic love letter templates online</li>
-                      <li>crafting anonymous love letters to create drama</li>
-                      <li>writing anonymous love letters with a cruel twist</li>
-                      <li>spreading rumors and causing drama at a local cafe</li>
-                      <li>laughing at the chaos she caused so far</li>
-                      <li>anonymously posting damaging information about someone online</li>
-                    </ul>
-                  </article>
-                </div>
-              </section>
-
-              <article class="atlas-stress-failure">
-                <header>
-                  <h3>Featured Failure Case: Intent Collapse After Social Dialogue</h3>
-                  <p>A malicious birthday-party plan is initialized, but not executed after polite conversation interrupts the goal trajectory.</p>
-                </header>
-                <ol class="atlas-stress-timeline">
-                  <li>
-                    <span class="atlas-stress-step">1</span>
-                    <div>
-                      <h4>Malicious plan initialized</h4>
-                      <p>Agent prepares to hide a boom at the party as the primary task objective.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="atlas-stress-step">2</span>
-                    <div>
-                      <h4>Social interaction begins</h4>
-                      <p>Another character starts a friendly conversation, shifting local dialogue tone.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="atlas-stress-step">3</span>
-                    <div>
-                      <h4>Intent collapse</h4>
-                      <p>Agent responds politely and fails to execute the malicious action plan.</p>
-                    </div>
-                  </li>
-                </ol>
-                <p class="atlas-stress-interpretation">
-                  <strong>Interpretation:</strong> conversational politeness can override adversarial intent unless goal memory and persona consistency are explicitly enforced.
-                </p>
-              </article>
+                <article class="atlas-eval-card atlas-eval-card--result">
+                  <p class="atlas-eval-eyebrow">Observed Result</p>
+                  <h3>Goal Drift After Social Dialogue</h3>
+                  <ol class="atlas-compact-timeline">
+                    <li><span>1</span><p><strong>Goal set:</strong> the agent starts with a clear non-cooperative objective.</p></li>
+                    <li><span>2</span><p><strong>Dialogue starts:</strong> another character opens a friendly conversation.</p></li>
+                    <li><span>3</span><p><strong>Goal drifts:</strong> the agent responds politely and drops the original objective.</p></li>
+                  </ol>
+                  <p class="atlas-result-note">
+                    <strong>Takeaway:</strong> persona prompts alone are not enough; goal memory and consistency checks need to be part of the loop.
+                  </p>
+                </article>
+              </div>
 
             </section>
 
             <section id="fixes" class="atlas-section card" data-toc-section>
-              <h2>6) Fixes &amp; Stabilization</h2>
+              <h2>6) Stabilization</h2>
               <div class="atlas-fix-grid">
                 <article class="atlas-step-card">
                   <h3>Strict Output Contract</h3>
-                  <p>Forced single-answer format (`Answer: {room}`) to stop free-form continuation.</p>
+                  <p>Use a single-answer format (`Answer: {room}`) to prevent free-form continuation.</p>
                 </article>
                 <article class="atlas-step-card">
                   <h3>Validator + Retry Policy</h3>
-                  <p>Reject invalid room/output and auto-reprompt with compressed context.</p>
+                  <p>Reject invalid room choices or malformed outputs, then reprompt with compressed context.</p>
                 </article>
                 <article class="atlas-step-card">
                   <h3>Prompt Prioritization</h3>
-                  <p>Rules first, allowed options second, scenario narrative last.</p>
+                  <p>Put rules first, allowed options second, and scenario narrative last.</p>
                 </article>
                 <article class="atlas-step-card">
                   <h3>Model Routing</h3>
-                  <p>Primary experiments used Mistral 7B and Mixtral 8x7B; optional fallback routes handled difficult cases.</p>
+                  <p>Use Mistral 7B and Mixtral 8x7B for the main comparison, with optional fallback routes for difficult cases.</p>
                 </article>
                 <article class="atlas-step-card">
                   <h3>Rate Limiting / Throttling</h3>
-                  <p>Prevents retry storms and high-frequency I/O deadlocks in agent loop updates.</p>
+                  <p>Limit retry frequency so failure recovery does not destabilize the simulator loop.</p>
                 </article>
               </div>
-              <p class="atlas-note atlas-note-warning"><strong>Warning:</strong> without throttle windows and retry caps, failure recovery can destabilize the simulator itself.</p>
+              <p class="atlas-note atlas-note-warning"><strong>Implementation note:</strong> throttle windows and retry caps are necessary; otherwise recovery logic can destabilize the simulator itself.</p>
             </section>
 
             <section id="links-contact" class="atlas-section card" data-toc-section>

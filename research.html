@@ -44,55 +44,88 @@
       <div class="container">
         <section class="section fade-in">
           <h1 class="section-title">Research</h1>
-          <p class="section-subtitle">Themes, active questions, and methods currently guiding my work.</p>
+          <p class="section-subtitle">Lab research, personal research questions, and new topics I am learning.</p>
         </section>
 
-        <section class="section skill-grid fade-in">
-          <article class="card">
-            <h2>Research Interests</h2>
-            <ul>
-              <li>Unsupervised learning and manifold learning</li>
-              <li>Representation learning and embeddings</li>
-              <li>Evaluation, robustness, and statistical modeling</li>
-              <li>Model interpretability for high-dimensional systems</li>
-            </ul>
-          </article>
+        <section class="section fade-in" aria-labelledby="research-focus">
+          <div class="research-editorial">
+            <header class="research-editorial-head">
+              <p class="research-kicker">Latent Structure Lab</p>
+              <h2 id="research-focus">Fixing distortion in low-dimensional visualization</h2>
+              <p>
+                My main research continues the published work on detecting distortion in nonlinear data embeddings. Our current
+                goal is to reduce that distortion with algorithms, so low-dimensional visualizations better preserve the
+                high-dimensional structure they represent.
+              </p>
+            </header>
 
-          <article class="card">
-            <h2>Current Questions I’m Exploring</h2>
-            <ul>
-              <li>How can we quantify embedding reliability across random seeds and data shifts?</li>
-              <li>Which diagnostics best predict downstream task performance from low-dimensional structure?</li>
-              <li>How should uncertainty estimation be integrated into practical model comparison workflows?</li>
-            </ul>
-          </article>
+            <div class="research-question-group">
+              <p class="research-kicker">Personal Research Questions I’m Interested In</p>
+              <ol class="research-question-list" aria-label="Personal research questions">
+                <li>
+                  <span class="research-number">01</span>
+                  <div>
+                    <h3>Multi-source hallucination</h3>
+                    <p>How can we reduce hallucination when a model must reconcile multiple input sources?</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="research-number">02</span>
+                  <div>
+                    <h3>Long-task memory</h3>
+                    <p>How should long-short memory systems be designed when tasks are long but context windows are limited?</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="research-number">03</span>
+                  <div>
+                    <h3>Embedding reliability</h3>
+                    <p>How can we quantify embedding reliability across random seeds and data shifts?</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
 
-          <article class="card">
-            <h2>Methods Toolbox</h2>
-            <p class="kv">UMAP, t-SNE, Isomap, PCA, clustering diagnostics, GLM/LMM/GEE, bootstrap inference, ablations, and calibration analysis.</p>
-          </article>
+            <div class="research-thread-list research-thread-list--single" aria-label="New topics learned">
+              <article>
+                <div class="research-kicker">Things I’m Learning</div>
+                <h3>LLM recommendation and voting</h3>
+                <p>
+                  I have researched recommendation systems with large language models, including LLM + vLLM majority voting to improve answer accuracy.
+                </p>
+              </article>
+            </div>
+          </div>
         </section>
 
-        <section class="section fade-in card">
-          <h2 class="mt-0">Publications & Posters</h2>
-          <h3>Publication</h3>
-          <ul>
-            <li>
-              <strong>Interactive Visualization of Metric Distortion in Nonlinear Data Embeddings using the distortions Package</strong>
-              (bioRxiv preprint, 2025).
-              <a href="https://www.biorxiv.org/content/10.1101/2025.08.21.671523v1" target="_blank" rel="noopener noreferrer">View on bioRxiv</a>
-            </li>
-          </ul>
+        <section class="section fade-in">
+          <h2 class="section-title">Past Publications &amp; Posters</h2>
 
-          <h3>Posters</h3>
-          <ul>
-            <li>
-              <a href="assets/research/quantum-poster.pdf" target="_blank" rel="noopener noreferrer">Quantum Poster (PDF)</a>
-            </li>
-            <li>
-              <a href="assets/research/scale-free-poster.pdf" target="_blank" rel="noopener noreferrer">Scale-Free Poster (PDF)</a>
-            </li>
-          </ul>
+          <article class="publication-row mt-4">
+            <div class="publication-main">
+              <p class="publication-eyebrow">Publication</p>
+              <h3>
+                <a href="https://academic.oup.com/bib/article/doi/10.1093/bib/bbag136/8559622" target="_blank" rel="noopener noreferrer">
+                  Interactive Visualization of Metric Distortion in Nonlinear Data Embeddings using the distortions Package
+                </a>
+              </h3>
+              <p class="publication-authors">
+                Briefings in Bioinformatics, 2026 · DOI: 10.1093/bib/bbag136 ·
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13034850/" target="_blank" rel="noopener noreferrer">Full text available on PMC</a>
+              </p>
+            </div>
+          </article>
+
+          <div class="poster-links mt-4">
+            <a href="assets/research/quantum-poster.pdf" target="_blank" rel="noopener noreferrer">
+              <span>Poster PDF</span>
+              <strong>Quantum Poster</strong>
+            </a>
+            <a href="assets/research/scale-free-poster.pdf" target="_blank" rel="noopener noreferrer">
+              <span>Poster PDF</span>
+              <strong>Scale-Free Poster</strong>
+            </a>
+          </div>
         </section>
       </div>
     </main>

@@ -1154,12 +1154,12 @@ function initAtlasVideoSwitcher() {
       track: resolveSitePath('assets/projects/atlas-agent-simulation/gpt-good-simulation.vtt'),
       poster: resolveSitePath('assets/projects/atlas-agent-simulation/scenario-format-drift-gpt.png'),
       label: 'Run A · GPT reference',
-      title: 'Run A: GPT reference behavior',
-      summary: 'Reference-quality run to anchor the expected level of simulation stability.',
+      title: 'Run A: GPT reference run',
+      summary: 'A reference run used to compare action continuity and schedule following.',
       points: [
-        'Provides the target behavior baseline.',
-        'Helps evaluate whether Mistral and Mixtral outputs are simulation-ready.',
-        'Not the primary focus of this case study.'
+        'Shows the expected level of action continuity.',
+        'Provides a comparison point for the open-model runs.',
+        'Helps separate model limits from simulator issues.'
       ]
     },
     'mistral-small': {
@@ -1167,12 +1167,12 @@ function initAtlasVideoSwitcher() {
       track: resolveSitePath('assets/projects/atlas-agent-simulation/mistral-small-random-walk.vtt'),
       poster: resolveSitePath('assets/projects/atlas-agent-simulation/scenario-format-drift-mistral.png'),
       label: 'Run B · Mistral 7B baseline',
-      title: 'Run B: Mistral 7B (random-walk failure)',
-      summary: 'Weak instruction grounding and unstable planning in baseline Mistral setup.',
+      title: 'Run B: Mistral 7B baseline drift',
+      summary: 'Baseline Mistral struggled with room choices and action continuity.',
       points: [
         'Frequent off-path movement under the same daily requirements.',
-        'Higher drift and long-context degradation.',
-        'Needs strict validation and retry control.'
+        'Higher drift under longer prompt context.',
+        'Requires strict validation and retry control.'
       ]
     },
     'mistral-large': {
@@ -1181,7 +1181,7 @@ function initAtlasVideoSwitcher() {
       poster: resolveSitePath('assets/projects/atlas-agent-simulation/scenario-long-context-mistral.png'),
       label: 'Run C · Mixtral 8x7B + prompt engineering',
       title: 'Run C: Mixtral 8x7B with prompt engineering',
-      summary: 'Improved reliability after rule-first prompt design and strict output validation.',
+      summary: 'Improved reliability after rule-first prompts and strict output validation.',
       points: [
         'Clearer prompt-to-action translation than 7B baseline.',
         'More stable action continuity under similar context.',
@@ -1280,7 +1280,7 @@ if (caseRoot) {
     if (descriptionMeta) {
       descriptionMeta.setAttribute(
         'content',
-        'Stanford generative-agents-inspired simulation rebuilt with Mistral 7B and Mixtral 8x7B: baseline failure modes, improved stability, and guardrails for hallucination and long-context drift.'
+        'Case study comparing Mistral 7B, Mixtral 8x7B, and a GPT reference run in a constrained agent simulation, with validation rules for room choice, schedule following, and long-context drift.'
       );
     }
 
