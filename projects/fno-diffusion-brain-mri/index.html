@@ -331,20 +331,26 @@
 
           <section id="lessons" class="fno-section">
             <h2>Lessons Learned</h2>
+            <p class="fno-lead">
+              MedSegDiff-V2 was originally the planned foundation for the hybrid model. The goal was to combine FNO with MedSegDiff so the diffusion
+              pipeline could use spectral global context for brain MRI segmentation. In practice, MedSegDiff-V2 was difficult to deploy, and its architecture
+              did not provide a clean insertion point for FNO blocks. Adding FNO looked less like a modular extension and more like changing the whole model
+              structure, so the experiment shifted toward a simpler diffusion U-shape baseline where each component could be isolated and tested.
+            </p>
             <div class="fno-lessons-grid">
               <article class="fno-lesson-card">
-                <h3>What was easy</h3>
+                <h3>What became workable</h3>
                 <ul>
-                  <li>Diffusion U-shape pipeline was easier than MedSegDiff-V2 due to clearer modular structure.</li>
+                  <li>The diffusion U-shape pipeline offered a clearer modular structure than MedSegDiff-V2.</li>
                   <li>Forward diffusion, denoising, and loss components were easier to isolate for debugging.</li>
                   <li>Swapping components (including FNO blocks) was straightforward in the modular baseline.</li>
                 </ul>
               </article>
               <article class="fno-lesson-card">
-                <h3>What was difficult</h3>
+                <h3>What stayed difficult</h3>
                 <ul>
-                  <li>Reproducing MedSegDiff-V2 for multiclass failed despite reasonable binary performance.</li>
-                  <li>Training was unstable and hard to tune for multiclass segmentation.</li>
+                  <li>Reproducing MedSegDiff-V2 for multiclass segmentation failed despite reasonable binary performance.</li>
+                  <li>Deployment and training were unstable, making multiclass tuning hard to trust.</li>
                   <li>Timestep embeddings with FNO blocks caused shape mismatches and conditioning issues.</li>
                 </ul>
               </article>
