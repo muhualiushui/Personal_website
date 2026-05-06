@@ -76,7 +76,7 @@
               <a href="#showcase-video" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Demo</span></a>
 
               <p class="fno-group-label">Results</p>
-              <a href="#comparison-gallery" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Baseline Evidence</span></a>
+              <a href="#comparison-gallery" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Mechanism</span></a>
               <a href="#failures" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Failure Cases</span></a>
               <a href="#eval-character" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Persona Stress Test</span></a>
 
@@ -215,43 +215,30 @@
                 </ol>
               </div>
 
-              <p class="atlas-summary-line"><strong>What this demo shows:</strong> model choice matters, but prompt structure and validation are what make the run usable.</p>
+              <p class="atlas-summary-line"><strong>What this demo sets up:</strong> the next step is the basic prompt-to-action mechanism, then the same mechanism is compared under Mistral 7B failure and Mixtral 8x7B improvement.</p>
               <p class="atlas-note atlas-note-warning"><strong>Note:</strong> these are qualitative demos, not benchmark metrics. `.mov` playback may vary by browser codec.</p>
             </section>
 
             <section id="comparison-gallery" class="atlas-section card" data-toc-section>
               <div class="atlas-section-head">
-                <h2>3) Baseline Reliability</h2>
-                <p>Before adding complex social behavior, the model first has to follow basic constraints. These screenshots show the difference between cleaner action execution and drift-prone outputs.</p>
+                <h2>3) Basic Mechanism: Prompt to Action</h2>
+                <p>Why actors can walk like shows in demo by models response? start with the simple loop: model will generate each character's daily plan base on background information, the model chooses the next action from the current situation, and the simulator turns that choice into movement. When the choice drifts away from the allowed options, the character starts wandering or getting stuck.</p>
               </div>
 
               <div class="atlas-filter-row" data-gallery-filters>
-                <button type="button" class="chip-btn" data-gallery-filter="constraint-drift">Constraint Drift</button>
                 <button type="button" class="chip-btn active" data-gallery-filter="prompt-to-action">Prompt to Action</button>
+                <button type="button" class="chip-btn" data-gallery-filter="constraint-drift">Constraint Drift</button>
               </div>
 
               <div class="atlas-gallery-stage">
                 <div class="atlas-carousel" data-gallery-carousel>
-                  <article class="atlas-scenario-card" data-gallery-item data-category="constraint-drift">
-                    <p class="kv"><strong>Constraint-following evidence:</strong> follow the allowed option set and keep schedule output coherent.</p>
-                    <div class="atlas-pair-grid">
-                      <figure>
-                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" alt="Stronger model output with cleaner action sequence" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-gpt.png" data-lightbox-caption="Constraint-following evidence - stronger model output" />
-                        <figcaption>Stronger run: cleaner, shorter action list with fewer derailments.</figcaption>
-                      </figure>
-                      <figure>
-                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" alt="Mistral 7B output with instruction confusion" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" data-lightbox-caption="Constraint-following evidence - Mistral 7B output" />
-                        <figcaption>Mistral 7B: verbose confusion and higher instruction-drift risk.</figcaption>
-                      </figure>
-                    </div>
-                  </article>
-
                   <article class="atlas-scenario-card active" data-gallery-item data-category="prompt-to-action">
-                    <p class="kv atlas-flow-lead"><strong>Prompt-to-action flow:</strong> convert plan text into executable movement.</p>
+                    <p class="kv atlas-flow-lead"><strong>Prompt-to-action flow:</strong> convert plan text into executable movement and completed actions.</p>
                     <ol class="atlas-flow-list">
                       <li><strong>Plan actions ahead:</strong> prepare action blocks before runtime.</li>
-                      <li><strong>Trigger by schedule:</strong> when a planned step starts, ask the model how to execute it.</li>
-                      <li><strong>Apply answer in code:</strong> runtime moves the character to the correct location.</li>
+                      <li><strong>Prompt at the scheduled time:</strong> send the model the current requirement, memory context, and allowed action options.</li>
+                      <li><strong>Parse the answer:</strong> keep the response close to a single executable location or action choice.</li>
+                      <li><strong>Apply answer in code:</strong> runtime moves the character to the selected location.</li>
                       <li><strong>Commit completion:</strong> action state is updated and the simulation continues.</li>
                     </ol>
                     <div class="atlas-pair-grid atlas-flow-grid">
@@ -262,6 +249,20 @@
                       <figure>
                         <img src="../../assets/projects/atlas-agent-simulation/scenario-long-context-gpt.png" alt="Simulation map showing action execution after planning" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-long-context-gpt.png" data-lightbox-caption="Text-to-action evidence - action execution view" />
                         <figcaption>Map execution view: code applies the instruction, moves the character, and completes the action in-world.</figcaption>
+                      </figure>
+                    </div>
+                  </article>
+
+                  <article class="atlas-scenario-card" data-gallery-item data-category="constraint-drift">
+                    <p class="kv"><strong>Constraint drift:</strong> the same mechanism breaks more often with Mistral 7B and becomes more usable with Mixtral 8x7B plus prompt engineering.</p>
+                    <div class="atlas-pair-grid">
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" alt="Mistral 7B output with instruction confusion" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-rule-violation-mistral.png" data-lightbox-caption="Mistral 7B error case - instruction confusion" />
+                        <figcaption>Mistral 7B error case: verbose confusion, incomplete schedule grounding, and higher instruction-drift risk.</figcaption>
+                      </figure>
+                      <figure>
+                        <img src="../../assets/projects/atlas-agent-simulation/scenario-long-context-mistral.png" alt="Mixtral 8x7B prompt-engineered output with cleaner action-state structure" data-lightbox-src="../../assets/projects/atlas-agent-simulation/scenario-long-context-mistral.png" data-lightbox-caption="Mixtral 8x7B improved case - cleaner action-state structure" />
+                        <figcaption>Mixtral 8x7B improved case: prompt-engineered action state stays closer to the executable movement loop.</figcaption>
                       </figure>
                     </div>
                   </article>
