@@ -9,24 +9,16 @@
 
 .atlas-content {
   display: grid;
-  gap: 0;
+  gap: 1rem;
 }
 
 .atlas-section {
   scroll-margin-top: 96px;
-  padding: clamp(1.85rem, 4vw, 3rem) 0;
-}
-
-.atlas-content > .atlas-section + .atlas-section {
-  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
-}
-
-.atlas-content > .atlas-section:first-child {
-  padding-top: 0.75rem;
-}
-
-.atlas-content > .atlas-section:last-child {
-  padding-bottom: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .atlas-kicker {

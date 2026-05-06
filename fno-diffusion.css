@@ -25,10 +25,6 @@ body.fno-drawer-open {
   gap: 1rem;
 }
 
-.fno-content-open {
-  gap: 0;
-}
-
 .fno-contents-toggle {
   display: none;
 }
@@ -195,19 +191,11 @@ body.fno-drawer-open {
 
 .fno-section {
   scroll-margin-top: 96px;
-  padding: clamp(1.85rem, 4vw, 3rem) 0;
-}
-
-.fno-content-open > .fno-section + .fno-section {
-  border-top: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
-}
-
-.fno-content-open > .fno-section:first-child {
-  padding-top: 0.75rem;
-}
-
-.fno-content-open > .fno-section:last-child {
-  padding-bottom: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 
 .fno-kicker {
