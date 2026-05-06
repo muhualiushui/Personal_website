@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../styles.css" />
     <link rel="stylesheet" href="../../fno-diffusion.css" />
   </head>
-  <body id="top">
+  <body id="top" class="project-blue-theme">
     <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header">
@@ -74,13 +74,12 @@
               <p class="fno-group-label">Wrap-up</p>
               <a href="#lessons" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Lessons</span></a>
               <a href="#future-work" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Future Work</span></a>
-              <a href="#team" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Context</span></a>
             </div>
           </nav>
 
-          <div class="fno-content">
+          <div class="fno-content fno-content-open">
 
-          <section id="overview" class="fno-section card">
+          <section id="overview" class="fno-section">
             <p class="fno-kicker">CSE 599 · Academic Case Study</p>
             <h1 class="fno-title">FNO-Diffusion for Brain MRI Segmentation</h1>
             <p class="fno-lead">
@@ -100,9 +99,7 @@
             </div>
 
             <div class="fno-cta-row">
-              <a class="btn btn-primary" href="#quant-results">View Results</a>
-              <a class="btn btn-secondary" href="https://github.com/muhualiushui/FNO_torch">GitHub Repo</a>
-              <a class="btn btn-secondary" href="../index.html">Back to Projects</a>
+              <a class="btn btn-primary" href="https://github.com/muhualiushui/FNO_torch">GitHub Repo</a>
             </div>
 
             <div class="fno-result-badges" aria-label="Result badges">
@@ -112,7 +109,7 @@
             </div>
           </section>
 
-          <section class="fno-section card" aria-label="Quick facts">
+          <section class="fno-section" aria-label="Quick facts">
             <h2>Quick Facts</h2>
             <p class="section-subtitle">Core dataset and experiment setup.</p>
 
@@ -141,7 +138,7 @@
             </div>
           </section>
 
-          <section id="problem" class="fno-section card">
+          <section id="problem" class="fno-section">
             <h2>Problem &amp; Motivation</h2>
             <p class="section-subtitle">
               Accurate tumor boundary delineation is clinically important, while manual annotation is slow and error-prone.
@@ -153,7 +150,7 @@
             </ul>
           </section>
 
-          <section id="approach" class="fno-section card">
+          <section id="approach" class="fno-section">
             <h2>Approach</h2>
             <p class="section-subtitle">Three model tracks under the same data split and DICE evaluation.</p>
 
@@ -202,7 +199,7 @@
             </details>
           </section>
 
-          <section id="visual-results" class="fno-section card">
+          <section id="visual-results" class="fno-section">
             <h2>Visual Results</h2>
             <p class="section-subtitle">Three-column qualitative comparison: Input, Ground Truth, Prediction.</p>
 
@@ -264,7 +261,7 @@
             </article>
           </section>
 
-          <section id="quant-results" class="fno-section card">
+          <section id="quant-results" class="fno-section">
             <h2>Quantitative Results</h2>
             <p class="section-subtitle">Ranked DICE comparison on the test set.</p>
 
@@ -332,7 +329,7 @@
             </aside>
           </section>
 
-          <section id="lessons" class="fno-section card">
+          <section id="lessons" class="fno-section">
             <h2>Lessons Learned</h2>
             <div class="fno-lessons-grid">
               <article class="fno-lesson-card">
@@ -359,7 +356,7 @@
             </figure>
           </section>
 
-          <section id="future-work" class="fno-section card">
+          <section id="future-work" class="fno-section">
             <h2>Future Work</h2>
             <div class="fno-future-grid">
               <article class="fno-future-card">
@@ -377,27 +374,6 @@
               <article class="fno-future-card">
                 <h3>4. Preserve local pathways</h3>
                 <p>Use spectral blocks for global context while retaining conv/attention paths for boundary detail.</p>
-              </article>
-            </div>
-          </section>
-
-          <section id="team" class="fno-section card">
-            <h2>Project Context</h2>
-            <div class="fno-team-grid">
-              <article class="fno-team-card">
-                <h3>Role</h3>
-                <ul>
-                  <li>Shuzhen Zhang</li>
-                </ul>
-                <p><strong>Scope:</strong> Course project focused on baseline reproduction and hybrid-model evaluation.</p>
-                <p><strong>Course:</strong> CSE 599</p>
-                <p><strong>Year:</strong> 2026</p>
-              </article>
-              <article class="fno-team-card">
-                <h3>Links</h3>
-                <p><a href="../index.html">Back to projects</a></p>
-                <p><a href="https://github.com/muhualiushui/FNO_torch">GitHub repo</a></p>
-                <p><a href="../../about.html#contact">Contact</a></p>
               </article>
             </div>
           </section>

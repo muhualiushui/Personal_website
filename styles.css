@@ -6,10 +6,10 @@
   --text: #111827;
   --muted: #4b5563;
   --border: #d7dde5;
-  --primary: #0f766e;
-  --primary-strong: #115e59;
-  --accent: #1d4ed8;
-  --success: #0f766e;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --accent: #2563eb;
+  --success: #2563eb;
   --journey-axis: var(--primary);
   --journey-axis-dot: color-mix(in srgb, var(--primary) 36%, white);
   --journey-panel-border: rgba(183, 194, 206, 0.78);
@@ -55,10 +55,10 @@
   --text: #e5ebf5;
   --muted: #afbdd3;
   --border: #2e3f57;
-  --primary: #2dd4bf;
-  --primary-strong: #5eead4;
+  --primary: #60a5fa;
+  --primary-strong: #93c5fd;
   --accent: #60a5fa;
-  --success: #14b8a6;
+  --success: #60a5fa;
   --journey-axis: var(--primary);
   --journey-axis-dot: color-mix(in srgb, var(--primary) 45%, white);
   --journey-panel-border: rgba(98, 116, 143, 0.45);
@@ -81,10 +81,10 @@
     --text: #e5ebf5;
     --muted: #afbdd3;
     --border: #2e3f57;
-    --primary: #2dd4bf;
-    --primary-strong: #5eead4;
+    --primary: #60a5fa;
+    --primary-strong: #93c5fd;
     --accent: #60a5fa;
-    --success: #14b8a6;
+    --success: #60a5fa;
     --journey-axis: var(--primary);
     --journey-axis-dot: color-mix(in srgb, var(--primary) 45%, white);
     --journey-panel-border: rgba(98, 116, 143, 0.45);
@@ -116,13 +116,28 @@ html {
 body {
   font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
   background: radial-gradient(circle at 10% 8%, rgba(29, 78, 216, 0.08), transparent 28%),
-    radial-gradient(circle at 88% 4%, rgba(15, 118, 110, 0.08), transparent 28%),
+    radial-gradient(circle at 88% 4%, rgba(96, 165, 250, 0.1), transparent 28%),
     var(--bg);
   color: var(--text);
   line-height: 1.6;
   font-size: var(--text-md);
   min-height: 100vh;
   text-rendering: optimizeLegibility;
+}
+
+body.project-blue-theme {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f8fafc;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --accent: #2563eb;
+  --success: #2563eb;
+  background: #ffffff;
+  color: #0f172a;
 }
 
 a {

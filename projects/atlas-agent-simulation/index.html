@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="../../imdb-case.css" />
     <link rel="stylesheet" href="../../fno-diffusion.css" />
   </head>
-  <body>
+  <body class="project-blue-theme">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container nav-wrap">
@@ -82,12 +82,11 @@
 
               <p class="fno-group-label">Wrap-up</p>
               <a href="#fixes" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Stabilization</span></a>
-              <a href="#links-contact" data-fno-anchor class="fno-nav-link"><span class="fno-nav-icon" aria-hidden="true"></span><span>Links</span></a>
             </nav>
           </aside>
 
           <article class="atlas-content fno-content">
-            <section id="hero" class="atlas-section atlas-hero card" data-toc-section>
+            <section id="hero" class="atlas-section atlas-hero" data-toc-section>
               <p class="atlas-kicker">ATLAS undergraduate project</p>
               <h1>Agent Simulation: From Mistral 7B Drift to Mixtral 8x7B Stability</h1>
               <p class="atlas-hero-summary">
@@ -101,22 +100,19 @@
                 <span class="chip"><strong>Timeframe:</strong> 2024</span>
               </div>
               <div class="project-actions atlas-cta-row">
-                <a class="btn btn-primary" href="#showcase-video">Watch Demo</a>
-                <a class="btn btn-secondary" href="#comparison-gallery">View Evidence</a>
-                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
+                <a class="btn btn-primary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
               </div>
             </section>
 
-            <section id="idea-inspiration" class="atlas-section card" data-toc-section>
+            <section id="idea-inspiration" class="atlas-section" data-toc-section>
               <h2>1) Inspiration</h2>
               <p>
-                Stanford's Smallville project showed how LLM agents can use memory, retrieval, planning, and action inside a simulated town. I used that idea as a starting point for a smaller experiment: could open models keep characters coherent when the environment adds hard room and schedule constraints? I also tested whether changes in persona descriptions would produce visible changes in behavior.
+                Stanford's Smallville project gave me both the conceptual frame and a code setting for running agents with memory, retrieval, planning, and action inside a simulated town. I adapted that setting for a smaller experiment with weaker open models: first testing whether Mistral 7B could keep characters coherent under hard room and schedule constraints, then comparing it with Mixtral 8x7B and changing persona descriptions to see whether behavior changed.
               </p>
               <p class="atlas-link-row">
                 <a class="atlas-source-link" href="https://hai.stanford.edu/news/computational-agents-exhibit-believable-humanlike-behavior" target="_blank" rel="noopener noreferrer">
-                  <span class="atlas-source-label">Research Source</span>
+                  <span class="atlas-source-label">Reference</span>
                   <span class="atlas-source-title">Stanford HAI: Computational agents exhibit believable humanlike behavior</span>
-                  <span class="atlas-source-action">Open Link</span>
                 </a>
               </p>
               <p>
@@ -128,7 +124,7 @@
 
             </section>
 
-            <section id="showcase-video" class="atlas-section card" data-toc-section>
+            <section id="showcase-video" class="atlas-section" data-toc-section>
               <h2>2) Demo Runs</h2>
               <p class="section-subtitle">Three runs use the same simulation objective: a GPT reference, a Mistral 7B baseline, and a Mixtral 8x7B run after prompt and validation changes.</p>
 
@@ -219,10 +215,10 @@
               <p class="atlas-note atlas-note-warning"><strong>Note:</strong> these are qualitative demos, not benchmark metrics. `.mov` playback may vary by browser codec.</p>
             </section>
 
-            <section id="comparison-gallery" class="atlas-section card" data-toc-section>
+            <section id="comparison-gallery" class="atlas-section" data-toc-section>
               <div class="atlas-section-head">
                 <h2>3) Basic Mechanism: Prompt to Action</h2>
-                <p>Why actors can walk like shows in demo by models response? start with the simple loop: model will generate each character's daily plan base on background information, the model chooses the next action from the current situation, and the simulator turns that choice into movement. When the choice drifts away from the allowed options, the character starts wandering or getting stuck.</p>
+                <p>To read the demos, start with the basic loop: the model builds each character's daily plan from the background information, then chooses the next valid action from the current situation. The simulator turns that choice into movement. When the answer drifts outside the allowed options, the character starts wandering, repeating, or getting stuck.</p>
               </div>
 
               <div class="atlas-filter-row" data-gallery-filters>
@@ -270,7 +266,7 @@
               </div>
             </section>
 
-            <section id="failures" class="atlas-section card" data-toc-section>
+            <section id="failures" class="atlas-section" data-toc-section>
               <h2>4) Failure Cases</h2>
               <p>Main failures came from Mistral 7B under dense prompts: invalid outputs, instruction drift, and communication loops.</p>
 
@@ -357,7 +353,7 @@ narrative text, and invalid alternatives instead of stopping at {main room}.</co
               </details>
             </section>
 
-            <section id="eval-character" class="atlas-section card" data-toc-section>
+            <section id="eval-character" class="atlas-section" data-toc-section>
               <div class="atlas-section-head">
                 <h2>5) Persona Stress Test</h2>
                 <p>
@@ -522,7 +518,7 @@ narrative text, and invalid alternatives instead of stopping at {main room}.</co
 
             </section>
 
-            <section id="fixes" class="atlas-section card" data-toc-section>
+            <section id="fixes" class="atlas-section" data-toc-section>
               <h2>6) Stabilization</h2>
               <div class="atlas-fix-grid">
                 <article class="atlas-step-card">
@@ -547,14 +543,6 @@ narrative text, and invalid alternatives instead of stopping at {main room}.</co
                 </article>
               </div>
               <p class="atlas-note atlas-note-warning"><strong>Implementation note:</strong> throttle windows and retry caps are necessary; otherwise recovery logic can destabilize the simulator itself.</p>
-            </section>
-
-            <section id="links-contact" class="atlas-section card" data-toc-section>
-              <h2>7) Links + Contact</h2>
-              <div class="atlas-links-grid">
-                <a class="btn btn-secondary" href="https://github.com/muhualiushui/AI_Simulation_Mixtral">GitHub Repo</a>
-                <a class="btn btn-primary" href="../../about.html#contact">Contact Shuzhen</a>
-              </div>
             </section>
           </article>
         </div>
@@ -603,9 +591,7 @@ narrative text, and invalid alternatives instead of stopping at {main room}.</co
               <span class="imdb-chip">Kaggle</span>
             </div>
             <div class="imdb-cta-row">
-              <a class="imdb-btn imdb-btn-primary" href="#imdb-results">View Results (scroll)</a>
-              <a class="imdb-btn" href="../../assets/projects/imdb-sentiment-analysis/imdb-sentiment-report.pdf" download>Download PDF</a>
-              <a class="imdb-btn" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
+              <a class="imdb-btn imdb-btn-primary" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub</a>
             </div>
           </div>
           <aside class="imdb-highlight" aria-label="Project highlights">
@@ -757,17 +743,12 @@ narrative text, and invalid alternatives instead of stopping at {main room}.</co
         </section>
 
         <section id="imdb-takeaways" class="imdb-section fade-in">
-          <h2 class="imdb-heading">Takeaways + Links</h2>
+          <h2 class="imdb-heading">Takeaways</h2>
           <ul class="imdb-takeaway-list">
             <li>Pretrained Transformers outperform BiLSTM on IMDb sentiment.</li>
             <li>XLNet consistently achieves the top accuracy.</li>
             <li>Increasing max sequence length helps, with diminishing returns beyond ~1024.</li>
           </ul>
-          <div class="imdb-footer-links">
-            <a class="imdb-btn imdb-btn-primary" href="../../assets/projects/imdb-sentiment-analysis/imdb-sentiment-report.pdf" download>Download Report (PDF)</a>
-            <a class="imdb-btn" href="https://github.com/muhualiushui/IMDb-Sentiment-by-LLM">GitHub / Notebook</a>
-            <a class="imdb-btn" href="../index.html">Back to Projects</a>
-          </div>
         </section>
           </div>
         </div>
